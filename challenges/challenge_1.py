@@ -1,3 +1,6 @@
+"""
+    The implementation of a graph, digraph, and vertex within python!
+"""
 import argparse
 
 
@@ -25,7 +28,7 @@ class Vertex:
 
     def __in_neighbors(self, vert):
         """
-            Check if the vertex is already a neighbor to this current one 
+            Check if the vertex is already a neighbor to this current one
 
             Args:
                 vert - The other vertex object we're checking
@@ -54,6 +57,12 @@ class Vertex:
     def add_neighbor(self, edge: tuple):
         """
             Add a neighbor to this vertex
+
+            Args:
+                edge - A tuple containing
+
+            Returns:
+                True if the edge was successfully added, False if not.
         """
         vert, weight = edge
         if not self.__in_neighbors(vert):
@@ -135,6 +144,7 @@ class Graph:
         added_from = from_vert_obj.add_neighbor((to_vert_obj, weight))
         added_to = to_vert_obj.add_neighbor((from_vert_obj, weight))
 
+        # Ensure that we had successful adds
         if added_from and added_to:
             self.edges += 1
 
@@ -163,10 +173,15 @@ class Graph:
         sorted_edges = set()
         unique_edges = set()
 
+        # Iterate through all of the edges within the graph
         for vert_key, vertex in self.graph.items():
+
+            # Iterate through all of the neighbors of the current vertex
             for neighbor_vert, weight in vertex.neighbors:
                 edge = (vert_key, neighbor_vert.key, str(weight))
                 sorted_edge = tuple(sorted(edge))
+
+                # Check if the sorted edge has been seen before.
                 if sorted_edge not in sorted_edges:
                     unique_edges.add(edge)
 
@@ -181,7 +196,7 @@ class DiGraph(Graph):
     """
 
     def __init__(self):
-        super().__init__()
+        super().__init__(self)
 
     def __repr__(self):
         return f"<Digraph> - {self.verticies} verts - {self.edges} edges"
@@ -256,7 +271,11 @@ def main(filename: str) -> Graph:
     # Open up the file and parse the graph from text
     with open(filename, "r") as file:
         counter = 0
+
+        # Iterate through the file
         for line in file:
+
+            # Obtain the type of graph
             if counter == 0:
                 graph_type = line.strip()
                 if graph_type == "G":
@@ -265,9 +284,13 @@ def main(filename: str) -> Graph:
                     graph = DiGraph()
                 else:
                     raise ValueError("Graph type not properly specified")
-            if counter == 1:
+
+            # Obtain the verticies for the graph.
+            elif counter == 1:
                 for key in line.strip().split(","):
                     verts.append(Vertex(key))
+
+            # Obtain all the edges.
             elif counter > 1:
                 edge = line.strip("()\n").split(",")
                 if len(edge) != 3 and len(edge) != 2:
