@@ -3,8 +3,8 @@ class Vertex:
         self.key = key
         self.__neighbors: list = []
 
-    def __eq__(self, otherVertKey):
-        return self.key == otherVertKey
+    def __eq__(self, other_vert):
+        return self.key == other_vert.key
 
     def __hash__(self):
         return hash(self.key)
@@ -12,15 +12,18 @@ class Vertex:
     def __str__(self):
         return "V-" + str(self.key)
 
-    def __inNeighbors(self, vert):
+    def __in_neighbors(self, vert):
         """
             Check if the vertex is already a neighbor to this current one 
+
+            Args:
+                vert
         """
         if not self.__neighbors:
             return False
 
-        for storedVert, _ in self.__neighbors:
-            if vert == storedVert:
+        for stored_vert, _ in self.__neighbors:
+            if vert == stored_vert:
                 return True
 
         return False
@@ -32,16 +35,20 @@ class Vertex:
         """
         return self.__neighbors
 
-    def addNeighbor(self, edge: tuple):
+    def add_neighbor(self, edge: tuple):
         """
             Add a neighbor to this vertex
         """
         vert, weight = edge
-        if not self.__inNeighbors(vert):
+        if not self.__in_neighbors(vert):
             self.__neighbors.append((vert, float(weight)))
 
 
 class Graph:
+    """
+        An undirected graph implementation
+    """
+
     def __init__(self):
         self.graph = {}
         self.verticies = 0
@@ -50,7 +57,7 @@ class Graph:
     def __hash_vert(self, vert: Vertex):
         return hash(vert)
 
-    def addVertex(self, vert: Vertex):
+    def add_vertex(self, vert: Vertex):
         """
             Add a vertex to the graph
 
@@ -65,7 +72,7 @@ class Graph:
 
         raise KeyError("The Vertex you're trying to add already exists")
 
-    def getVertex(self, vertKey: str):
+    def get_vertex(self, vertKey: str):
         """
             Get a specific vertex from the set of verticies we have.
 
@@ -80,7 +87,7 @@ class Graph:
 
         raise KeyError("The Vertex is not stored within this graph.")
 
-    def getVerticies(self):
+    def get_verticies(self):
         """
             Return a list of all the vertex keys
 
@@ -89,7 +96,7 @@ class Graph:
         """
         return self.graph.keys()
 
-    def addEdge(self, fromVert: str, toVert: str, weight: float = 1.0):
+    def add_edge(self, fromVert: str, toVert: str, weight: float = 1.0):
         """
            Add an edge to the graph 
 
@@ -112,11 +119,10 @@ class Graph:
 
         # Add the neighbors to each vertex
         self.graph[fromVert].addNeighbor((toVertObj, weight))
-        self.graph[toVert].addNeighbor((fromVertObj, weight))
 
         self.edges += 1
 
-    def getNeighbors(self, vert: Vertex):
+    def get_neighbors(self, vert: Vertex):
         """
             Get the neighbors of a vertex stored within the graph.
 
@@ -128,7 +134,7 @@ class Graph:
 
         return self.graph[vert].neighbors
 
-    def getEdges(self):
+    def get_edges(self):
         """
             Get the edges of
         """
@@ -152,10 +158,10 @@ import argparse
 
 def fill_graph(graph: Graph, verts: list, edges: list):
     for vert in verts:
-        graph.addVertex(vert)
+        graph.add_vertex(vert)
 
     for fromVert, toVert, weight in edges:
-        graph.addEdge(fromVert, toVert, weight)
+        graph.add_edge(fromVert, toVert, weight)
 
 
 def main(filename: str) -> Graph:
@@ -184,7 +190,7 @@ def main(filename: str) -> Graph:
                 edge = line.strip("()\n").split(",")
                 if len(edge) != 3:
                     raise Exception(
-                        f"You specified way too many arguments for the edge: {line}"
+                        f"You specified an incorrect amount of args for the edge: {line}"
                     )
                 edges.append(edge)
             counter += 1
@@ -195,8 +201,11 @@ def main(filename: str) -> Graph:
     print(f"Verticies: {graph.verticies}")
     print(f"Edges: {graph.edges}")
     print("Edge list:")
-    for fromVert, toVert, weight in graph.getEdges():
+
+    # iterate through the fromVert, toVert, and weights and print them out.
+    for fromVert, toVert, weight in graph.get_edges():
         print(f"({fromVert}, {toVert}, {weight})")
+
     return graph
 
 
