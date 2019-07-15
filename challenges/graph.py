@@ -3,8 +3,8 @@ class Vertex:
         self.key = key
         self.__neighbors: list = []
 
-    def __eq__(self, otherVert):
-        return self.key == otherVert.key
+    def __eq__(self, otherVertKey):
+        return self.key == otherVertKey
 
     def __hash__(self):
         return hash(self.key)
@@ -20,6 +20,7 @@ class Vertex:
             return False
 
         for storedVert, _ in self.__neighbors:
+            print(storedVert)
             if vert == storedVert:
                 return True
 
@@ -30,14 +31,15 @@ class Vertex:
         """
             Get the keys of the neighbors of the vertex
         """
-        return [vertKey for vertKey, _ in self.__neighbors]
+        return [vert.key for vert, _ in self.__neighbors]
 
-    def addNeighbor(self, vert: tuple):
+    def addNeighbor(self, edge: tuple):
         """
             Add a neighbor to this vertex
         """
+        vert, weight = edge
         if not self.__inNeighbors(vert):
-            self.__neighbors.append(vert)
+            self.__neighbors.append(edge)
 
 
 class Graph:
@@ -46,20 +48,25 @@ class Graph:
         self.verticies = 0
         self.edges = 0
 
-    def addVertex(self, vertex: Vertex):
+    def __hash_vert(self, vert: Vertex):
+        return hash(vert)
+
+    def addVertex(self, vert: Vertex):
         """
             Add a vertex to the graph
 
             Args:
                 vertex - The vertex object that we would like to be adding.
         """
-        if vertex not in self.graph:
-            self.graph[vertex] = vertex
+
+        if vert.key not in self.graph:
+            self.graph[vert.key] = vert
             self.verticies += 1
+            return
 
         raise KeyError("The Vertex you're trying to add already exists")
 
-    def getVertex(self, vertKey: int):
+    def getVertex(self, vertKey: str):
         """
             Get a specific vertex from the set of verticies we have.
 
@@ -83,7 +90,7 @@ class Graph:
         """
         return self.graph.keys()
 
-    def addEdge(self, fromVert: Vertex, toVert: Vertex, weight: float = 0):
+    def addEdge(self, fromVert: str, toVert: str, weight: float = 0):
         """
            Add an edge to the graph 
 
@@ -92,13 +99,21 @@ class Graph:
                toVert - The vertex object we're connecting the fromVert to
                weight - (0) - The weight of the edge 
         """
+
+        # The hashed keys for the from and to verts
+
         if fromVert not in self.graph or toVert not in self.graph:
             raise ValueError("One of the verticies is not currently in the graph.")
         elif fromVert == toVert:
             raise ValueError("You cannot have a vertex connect to itself.")
 
-        self.graph[fromVert].addNeighbor((toVert, weight))
-        self.graph[toVert].addNeighbor((fromVert, weight))
+        # The from and to vertex objects
+        fromVertObj = self.graph[fromVert]
+        toVertObj = self.graph[toVert]
+
+        # Add the neighbors to each vertex
+        self.graph[fromVert].addNeighbor((toVertObj, weight))
+        self.graph[toVert].addNeighbor((fromVertObj, weight))
 
         self.edges += 1
 
@@ -118,29 +133,42 @@ class Graph:
 import argparse
 
 
-def main(filename):
-    graph = None
+def fill_graph(graph: Graph, verts: list, edges: list):
+    for vert in verts:
+        graph.addVertex(vert)
+
+    for fromVert, toVert, weight in edges:
+        graph.addEdge(fromVert, toVert, weight)
+
+    print(graph.graph)
+
+
+def main(filename: str) -> object:
+    graph = Graph()
     verts = []
     edges = []
     with open(filename, "r") as file:
         counter = 0
         for line in file:
-            if line == "G" and not graph:
-                graph = Graph()
-            else:
-                if counter == 1:
-                    for key in line.strip().split(","):
-                        verts.append(Vertex(key))
-                elif counter > 1:
-                    edge = line.strip(["(", ")"]).split(",")
-                    if len(edge) > 3:
-                        raise Exception(
-                            f"You specified way too many arguments for the edge: {line}"
-                        )
-                    edges.append(edge)
-
+            if counter == 1:
+                for key in line.strip().split(","):
+                    verts.append(Vertex(key))
+            elif counter > 1:
+                edge = line.strip("()\n").split(",")
+                if len(edge) != 3:
+                    raise Exception(
+                        f"You specified way too many arguments for the edge: {line}"
+                    )
+                edges.append(edge)
+            counter += 1
     print(verts)
     print(edges)
+    fill_graph(graph, verts, edges)
+
+    for vertKey, vertex in graph.graph.items():
+        print(vertKey)
+        print(vertex.neighbors)
+    return graph
 
 
 if __name__ == "__main__":
@@ -150,5 +178,4 @@ if __name__ == "__main__":
 
     if not args.filename:
         raise Exception("You didn't provide a file argument!")
-
     main(args.filename)
