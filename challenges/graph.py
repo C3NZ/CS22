@@ -1,7 +1,7 @@
 class Vertex:
     def __init__(self, key: str):
         self.key = key
-        self.__neighbors = []
+        self.__neighbors: list = []
 
     def __eq__(self, otherVert):
         return self.key == otherVert.key
@@ -28,9 +28,9 @@ class Vertex:
     @property
     def neighbors(self):
         """
-            Get the neighbors of the vertex
+            Get the keys of the neighbors of the vertex
         """
-        return self.__neighbors
+        return [vertKey for vertKey, _ in self.__neighbors]
 
     def addNeighbor(self, vert: tuple):
         """
@@ -76,12 +76,12 @@ class Graph:
 
     def getVerticies(self):
         """
-            Return a list of all the vertex objects
+            Return a list of all the vertex keys
 
             Returns:
                 a list of all verticies objects within the graph
         """
-        return self.graph.values()
+        return self.graph.keys()
 
     def addEdge(self, fromVert: Vertex, toVert: Vertex, weight: float = 0):
         """
@@ -100,6 +100,8 @@ class Graph:
         self.graph[fromVert].addNeighbor((toVert, weight))
         self.graph[toVert].addNeighbor((fromVert, weight))
 
+        self.edges += 1
+
     def getNeighbors(self, vert: Vertex):
         """
             Get the neighbors of a vertex stored within the graph.
@@ -111,3 +113,42 @@ class Graph:
             raise KeyError("The vertex is not in the graph")
 
         return self.graph[vert].neighbors
+
+
+import argparse
+
+
+def main(filename):
+    graph = None
+    verts = []
+    edges = []
+    with open(filename, "r") as file:
+        counter = 0
+        for line in file:
+            if line == "G" and not graph:
+                graph = Graph()
+            else:
+                if counter == 1:
+                    for key in line.strip().split(","):
+                        verts.append(Vertex(key))
+                elif counter > 1:
+                    edge = line.strip(["(", ")"]).split(",")
+                    if len(edge) > 3:
+                        raise Exception(
+                            f"You specified way too many arguments for the edge: {line}"
+                        )
+                    edges.append(edge)
+
+    print(verts)
+    print(edges)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Create a graph from text files")
+    parser.add_argument("filename", help="The name of the file to read from")
+    args = parser.parse_args()
+
+    if not args.filename:
+        raise Exception("You didn't provide a file argument!")
+
+    main(args.filename)
