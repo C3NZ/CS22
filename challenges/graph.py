@@ -17,7 +17,7 @@ class Vertex:
             Check if the vertex is already a neighbor to this current one 
 
             Args:
-                vert
+                vert - The other vertex object we're checking
         """
         if not self.__neighbors:
             return False
@@ -42,6 +42,8 @@ class Vertex:
         vert, weight = edge
         if not self.__in_neighbors(vert):
             self.__neighbors.append((vert, float(weight)))
+            return True
+        return False
 
 
 class Graph:
@@ -72,7 +74,7 @@ class Graph:
 
         raise KeyError("The Vertex you're trying to add already exists")
 
-    def get_vertex(self, vertKey: str):
+    def get_vertex(self, vert_key: str):
         """
             Get a specific vertex from the set of verticies we have.
 
@@ -82,86 +84,103 @@ class Graph:
             Returns:
                 a vertex object if the vertkey is found
         """
-        if vertKey in self.graph:
-            return self.graph[vertKey]
+        if vert_key in self.graph:
+            return self.graph[vert_key]
 
         raise KeyError("The Vertex is not stored within this graph.")
 
     def get_verticies(self):
         """
-            Return a list of all the vertex keys
+            Return a list of all the vertex keys 
 
             Returns:
                 a list of all verticies objects within the graph
         """
         return self.graph.keys()
 
-    def add_edge(self, fromVert: str, toVert: str, weight: float = 1.0):
+    def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
            Add an edge to the graph 
 
            Args:
                fromVert - The vertex object we're connecting the toVert to
                toVert - The vertex object we're connecting the fromVert to
-               weight - (0) - The weight of the edge 
+               weight - (1.0) - The weight of the edge 
         """
 
-        # The hashed keys for the from and to verts
-
-        if fromVert not in self.graph or toVert not in self.graph:
+        # Error handling before trying to add an edge
+        if from_vert not in self.graph or to_vert not in self.graph:
             raise ValueError("One of the verticies is not currently in the graph.")
-        elif fromVert == toVert:
+        elif from_vert == to_vert:
             raise ValueError("You cannot have a vertex connect to itself.")
 
-        # The from and to vertex objects
-        fromVertObj = self.graph[fromVert]
-        toVertObj = self.graph[toVert]
+        # The from and to vertex objects within our graph
+        from_vert_obj = self.graph[from_vert]
+        to_vert_obj = self.graph[to_vert]
 
         # Add the neighbors to each vertex
-        self.graph[fromVert].addNeighbor((toVertObj, weight))
+        added_from = from_vert_obj.add_neighbor((to_vert_obj, weight))
+        added_to = to_vert_obj.add_neighbor((from_vert_obj, weight))
 
-        self.edges += 1
+        if added_from and added_to:
+            self.edges += 1
 
-    def get_neighbors(self, vert: Vertex):
+    def get_neighbors(self, vert_key: str):
         """
             Get the neighbors of a vertex stored within the graph.
 
             Args:
                 vert: The vertex we're trying to get the neighbors of.
+
+            Returns:
+                The neighbors of the vertex that we're looking for
         """
-        if vert not in self.graph:
+        if vert_key not in self.graph:
             raise KeyError("The vertex is not in the graph")
 
-        return self.graph[vert].neighbors
+        return self.graph[vert_key].neighbors
 
     def get_edges(self):
         """
-            Get the edges of
+            Get all of the edges from the graph
+
+            Returns:
+                A list of the unique edges within the graph.
         """
-        sortedEdges = set()
-        uniqueEdges = set()
+        sorted_edges = set()
+        unique_edges = set()
 
-        for vertKey, vertex in self.graph.items():
-            for neighborVert, weight in vertex.neighbors:
-                edge = (vertKey, neighborVert.key, str(weight))
-                sortedEdge = tuple(sorted(edge))
-                if sortedEdge not in sortedEdges:
-                    uniqueEdges.add(edge)
+        for vert_key, vertex in self.graph.items():
+            for neighbor_vert, weight in vertex.neighbors:
+                edge = (vert_key, neighbor_vert.key, str(weight))
+                sorted_edge = tuple(sorted(edge))
+                if sorted_edge not in sorted_edges:
+                    unique_edges.add(edge)
 
-                sortedEdges.add(sortedEdge)
+                sorted_edges.add(sorted_edge)
 
-        return list(uniqueEdges)
+        return list(unique_edges)
 
 
 import argparse
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
+    """
+        Fill an undirected graph object with verticies and edges.
+
+        Args:
+            graph - the undirected graph object that is going to be filled
+            verts - A list of vertex objects to add to the graph
+            edges - A list of tuples that contain edge keys and weights.
+    """
+    # Iterate through the verticies.
     for vert in verts:
         graph.add_vertex(vert)
 
-    for fromVert, toVert, weight in edges:
-        graph.add_edge(fromVert, toVert, weight)
+    # Iterate through the edges and add it.
+    for from_vert, to_vert, weight in edges:
+        graph.add_edge(from_vert, to_vert, weight)
 
 
 def main(filename: str) -> Graph:
@@ -203,8 +222,8 @@ def main(filename: str) -> Graph:
     print("Edge list:")
 
     # iterate through the fromVert, toVert, and weights and print them out.
-    for fromVert, toVert, weight in graph.get_edges():
-        print(f"({fromVert}, {toVert}, {weight})")
+    for from_vert, to_vert, weight in graph.get_edges():
+        print(f"({from_vert}, {to_vert}, {weight})")
 
     return graph
 
