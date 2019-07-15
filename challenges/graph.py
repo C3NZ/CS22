@@ -30,7 +30,9 @@ class Vertex:
             Args:
                 vert - The other vertex object we're checking
 
-            
+            Returns:
+                True if the vert is found, false if not.
+
         """
         if not self.__neighbors:
             return False
@@ -173,6 +175,41 @@ class Graph:
         return list(unique_edges)
 
 
+class DiGraph(Graph):
+    """
+        A directed graph
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
+        """
+           Add an edge to the graph
+
+           Args:
+               fromVert - The vertex object we're connecting the toVert to
+               toVert - The vertex object we're connecting the fromVert to
+               weight - (1.0) - The weight of the edge
+        """
+
+        # Error handling before trying to add an edge
+        if from_vert not in self.graph or to_vert not in self.graph:
+            raise ValueError("One of the verticies is not currently in the graph.")
+        if from_vert == to_vert:
+            raise ValueError("You cannot have a vertex connect to itself.")
+
+        # The from and to vertex objects within our graph
+        from_vert_obj = self.graph[from_vert]
+        to_vert_obj = self.graph[to_vert]
+
+        # Add the neighbors to each vertex
+        added_from = from_vert_obj.add_neighbor((to_vert_obj, weight))
+
+        if added_from:
+            self.edges += 1
+
+
 def fill_graph(graph: Graph, verts: list, edges: list):
     """
         Fill an undirected graph object with verticies and edges.
@@ -186,9 +223,16 @@ def fill_graph(graph: Graph, verts: list, edges: list):
     for vert in verts:
         graph.add_vertex(vert)
 
-    # Iterate through the edges and add it.
-    for from_vert, to_vert, weight in edges:
-        graph.add_edge(from_vert, to_vert, weight)
+    # Iterate through the edges and add it to the graph.
+    for edge in edges:
+        from_vert, to_vert = edge[0], edge[1]
+
+        # Check if the edge is already weighted
+        if len(edge) == 2:
+            graph.add_edge(from_vert, to_vert)
+        else:
+            weight = edge[2]
+            graph.add_edge(from_vert, to_vert, weight)
 
 
 def main(filename: str) -> Graph:
@@ -210,13 +254,21 @@ def main(filename: str) -> Graph:
     with open(filename, "r") as file:
         counter = 0
         for line in file:
+            if counter == 0:
+                graph_type = line.strip()
+                if graph_type == "G":
+                    graph = Graph()
+                elif graph_type == "D":
+                    graph = DiGraph()
+                else:
+                    raise ValueError("Graph type not properly specified")
             if counter == 1:
                 for key in line.strip().split(","):
                     verts.append(Vertex(key))
             elif counter > 1:
                 edge = line.strip("()\n").split(",")
-                if len(edge) != 3:
-                    raise Exception(
+                if len(edge) != 3 and len(edge) != 2:
+                    raise ValueError(
                         f"You specified an incorrect amount of args for the edge: {line}"
                     )
                 edges.append(edge)
