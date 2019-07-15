@@ -1,4 +1,15 @@
+import argparse
+
+
 class Vertex:
+    """
+        The vertex object that is to be stored within a graph object
+
+        properties:
+            key - The key or label of the vertex.
+            __neighbors - a list of edges between this vertex and another one.
+    """
+
     def __init__(self, key: str):
         self.key = key
         self.__neighbors: list = []
@@ -18,10 +29,13 @@ class Vertex:
 
             Args:
                 vert - The other vertex object we're checking
+
+            
         """
         if not self.__neighbors:
             return False
 
+        # Iterate through the graph
         for stored_vert, _ in self.__neighbors:
             if vert == stored_vert:
                 return True
@@ -56,9 +70,6 @@ class Graph:
         self.verticies = 0
         self.edges = 0
 
-    def __hash_vert(self, vert: Vertex):
-        return hash(vert)
-
     def add_vertex(self, vert: Vertex):
         """
             Add a vertex to the graph
@@ -91,7 +102,7 @@ class Graph:
 
     def get_verticies(self):
         """
-            Return a list of all the vertex keys 
+            Return a list of all the vertex keys
 
             Returns:
                 a list of all verticies objects within the graph
@@ -100,18 +111,18 @@ class Graph:
 
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
-           Add an edge to the graph 
+           Add an edge to the graph
 
            Args:
                fromVert - The vertex object we're connecting the toVert to
                toVert - The vertex object we're connecting the fromVert to
-               weight - (1.0) - The weight of the edge 
+               weight - (1.0) - The weight of the edge
         """
 
         # Error handling before trying to add an edge
         if from_vert not in self.graph or to_vert not in self.graph:
             raise ValueError("One of the verticies is not currently in the graph.")
-        elif from_vert == to_vert:
+        if from_vert == to_vert:
             raise ValueError("You cannot have a vertex connect to itself.")
 
         # The from and to vertex objects within our graph
@@ -162,15 +173,12 @@ class Graph:
         return list(unique_edges)
 
 
-import argparse
-
-
 def fill_graph(graph: Graph, verts: list, edges: list):
     """
         Fill an undirected graph object with verticies and edges.
 
         Args:
-            graph - the undirected graph object that is going to be filled
+            graph - the graph object that is going to be filled
             verts - A list of vertex objects to add to the graph
             edges - A list of tuples that contain edge keys and weights.
     """
@@ -228,11 +236,23 @@ def main(filename: str) -> Graph:
     return graph
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Create a graph from text files")
-    parser.add_argument("filename", help="The name of the file to read from")
-    args = parser.parse_args()
+def process_args() -> argparse.Namespace:
+    """
+        Process the command line arguments
 
-    if not args.filename:
+        Returns:
+            an argparser namespace for the parsed objects.
+    """
+    arg_parser = argparse.ArgumentParser(description="Create a graph from text files")
+    arg_parser.add_argument("filename", help="The name of the file to read from")
+    arguments = arg_parser.parse_args()
+
+    return arguments
+
+
+if __name__ == "__main__":
+    ARGS = process_args()
+
+    if not ARGS.filename:
         raise Exception("You didn't provide a file argument!")
-    main(args.filename)
+    main(ARGS.filename)
