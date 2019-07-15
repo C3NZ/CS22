@@ -183,6 +183,9 @@ class DiGraph(Graph):
     def __init__(self):
         super().__init__()
 
+    def __repr__(self):
+        return f"<Digraph> - {self.verticies} verts - {self.edges} edges"
+
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
            Add an edge to the graph
@@ -285,6 +288,7 @@ def main(filename: str) -> Graph:
     for from_vert, to_vert, weight in graph.get_edges():
         print(f"({from_vert}, {to_vert}, {weight})")
 
+    print(graph)
     return graph
 
 
