@@ -20,7 +20,6 @@ class Vertex:
             return False
 
         for storedVert, _ in self.__neighbors:
-            print(storedVert)
             if vert == storedVert:
                 return True
 
@@ -31,7 +30,7 @@ class Vertex:
         """
             Get the keys of the neighbors of the vertex
         """
-        return [vert.key for vert, _ in self.__neighbors]
+        return self.__neighbors
 
     def addNeighbor(self, edge: tuple):
         """
@@ -39,7 +38,7 @@ class Vertex:
         """
         vert, weight = edge
         if not self.__inNeighbors(vert):
-            self.__neighbors.append(edge)
+            self.__neighbors.append((vert, float(weight)))
 
 
 class Graph:
@@ -90,7 +89,7 @@ class Graph:
         """
         return self.graph.keys()
 
-    def addEdge(self, fromVert: str, toVert: str, weight: float = 0):
+    def addEdge(self, fromVert: str, toVert: str, weight: float = 1.0):
         """
            Add an edge to the graph 
 
@@ -129,6 +128,24 @@ class Graph:
 
         return self.graph[vert].neighbors
 
+    def getEdges(self):
+        """
+            Get the edges of
+        """
+        sortedEdges = set()
+        uniqueEdges = set()
+
+        for vertKey, vertex in self.graph.items():
+            for neighborVert, weight in vertex.neighbors:
+                edge = (vertKey, neighborVert.key, str(weight))
+                sortedEdge = tuple(sorted(edge))
+                if sortedEdge not in sortedEdges:
+                    uniqueEdges.add(edge)
+
+                sortedEdges.add(sortedEdge)
+
+        return list(uniqueEdges)
+
 
 import argparse
 
@@ -140,13 +157,23 @@ def fill_graph(graph: Graph, verts: list, edges: list):
     for fromVert, toVert, weight in edges:
         graph.addEdge(fromVert, toVert, weight)
 
-    print(graph.graph)
 
+def main(filename: str) -> Graph:
+    """
+        Main functionality of the app, opens the file and then
+        parses it into a graph object
 
-def main(filename: str) -> object:
+        Args:
+            filename - The name of the file to open
+
+        Returns:
+            A graph object with the specified vertex and edges added
+    """
     graph = Graph()
     verts = []
     edges = []
+
+    # Open up the file and parse the graph from text
     with open(filename, "r") as file:
         counter = 0
         for line in file:
@@ -161,13 +188,15 @@ def main(filename: str) -> object:
                     )
                 edges.append(edge)
             counter += 1
-    print(verts)
-    print(edges)
+
+    # Fill the graph with the necessary items
     fill_graph(graph, verts, edges)
 
-    for vertKey, vertex in graph.graph.items():
-        print(vertKey)
-        print(vertex.neighbors)
+    print(f"Verticies: {graph.verticies}")
+    print(f"Edges: {graph.edges}")
+    print("Edge list:")
+    for fromVert, toVert, weight in graph.getEdges():
+        print(f"({fromVert}, {toVert}, {weight})")
     return graph
 
 
