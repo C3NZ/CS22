@@ -18,8 +18,8 @@ class Graph:
         """
             Add a vertex to the graph
 
-            Args:\n
-                vertex - The vertex object that we would like to be adding.\n
+            Args:
+                * vertex - The vertex object that we would like to be adding.
         """
 
         if vert.key not in self.graph:
