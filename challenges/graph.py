@@ -96,7 +96,7 @@ class Graph:
 
         return self.graph[vert_key].neighbors
 
-    def get_edges(self) -> list:
+    def get_edges(self) -> [tuple]:
         """
             Get all of the edges from the graph
 
@@ -116,7 +116,7 @@ class Graph:
 
                 # Check if the sorted edge has been seen before.
                 if sorted_edge not in sorted_edges:
-                    unique_edges.add(tuple([vert, neighbor_vert, int(weight)]))
+                    unique_edges.add((vert_key, neighbor_vert.key, int(weight)))
 
                 sorted_edges.add(sorted_edge)
 

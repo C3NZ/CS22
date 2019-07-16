@@ -6,15 +6,12 @@ class Digraph(Graph):
         A directed graph
     """
 
-    def __init__(self):
-        super().__init__()
-
     def __repr__(self):
         return f"<Digraph> - {self.verticies} verts - {self.edges} edges"
 
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
-           Add an edge to the graph
+           Add an edge to the digraph
 
            Args:
                fromVert - The vertex object we're connecting the toVert to
@@ -32,8 +29,27 @@ class Digraph(Graph):
         from_vert_obj = self.graph[from_vert]
         to_vert_obj = self.graph[to_vert]
 
-        # Add the neighbors to each vertex
+        # Add the neighbors to the vertex
         added_from = from_vert_obj.add_neighbor((to_vert_obj, weight))
 
         if added_from:
             self.edges += 1
+
+    def get_edges(self) -> [tuple]:
+        """
+            Get all of the edges from the graph
+
+            Returns:
+                A list of the unique edges within the graph.
+        """
+        unique_edges: set = set()
+
+        # Iterate through all of the edges within the graph
+        for vert_key, vert in self.graph.items():
+
+            # Iterate through all of the neighbors of the current vertex
+            for neighbor_vert, weight in vert.neighbors:
+                edge = (vert.key, neighbor_vert.key, int(weight))
+                unique_edges.add(edge)
+
+        return list(unique_edges)
