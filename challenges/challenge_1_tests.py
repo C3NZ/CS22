@@ -3,7 +3,9 @@
 """
 import unittest
 
-from challenge_1 import DiGraph, Graph, Vertex
+from digraph import Digraph
+from graph import Graph
+from vertex import Vertex
 
 
 class VertexTest(unittest.TestCase):
@@ -55,3 +57,42 @@ class GraphTest(unittest.TestCase):
         # Try adding a vertex with the same key
         with self.assertRaises(KeyError):
             graph.add_vertex(v3)
+
+    def test_get_vertex(self):
+        graph = Graph()
+
+        # Create verticies
+        v1, v2, v3 = Vertex("k"), Vertex("g"), Vertex("a")
+
+        # Add verticies to the list
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+
+        # Assert the count is equal
+        self.assertEqual(graph.verticies, 3)
+
+        # Assert that we can get all verts by keys
+        self.assertEqual(v1, graph.get_vertex("k"))
+        self.assertEqual(v2, graph.get_vertex("g"))
+        self.assertEqual(v3, graph.get_vertex("a"))
+
+        # Attempt to get a key that doesn't exist
+        with self.assertRaises(KeyError):
+            graph.get_vertex("j")
+
+    def test_get_verticies(self):
+        graph = Graph()
+
+        # Create verticies
+        v1, v2, v3 = Vertex("k"), Vertex("g"), Vertex("a")
+
+        # Add verticies to the list
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+
+        # Assert the count is equal
+        self.assertEqual(graph.verticies, 3)
+
+        self.assertListEqual(graph.get_verticies(), [v1, v2, v3])
