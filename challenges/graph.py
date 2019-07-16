@@ -18,7 +18,7 @@ class Graph:
         """
             Add a vertex to the graph
 
-            Args:
+            Args:\
                 * vertex - The vertex object that we would like to be adding.
         """
 
