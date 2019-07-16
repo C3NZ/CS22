@@ -4,7 +4,6 @@ class Vertex:
 
         Properties:
         * key - The key or label of the vertex.
-        * __neighbors - a list of edges between this vertex and another one.
     """
 
     def __init__(self, key: str):
@@ -47,16 +46,20 @@ class Vertex:
     @property
     def neighbors(self):
         """
-            Get the keys of the neighbors of the vertex
+            Function for getting the keys of the neighbors of the vertex
+
+            Returns:
+                A list of all neighbors to the current vertex
         """
         return self.__neighbors
 
     def add_neighbor(self, edge: tuple):
         """
-            Add a neighbor to this vertex
+            Function for adding a neighbor to this vertex
 
             Args:
-            * edge - A tuple containing
+            * edge - A tuple containing the vertex object and it's
+            corresponding weight
 
             Returns:
             * True if the edge was successfully added, False if not.

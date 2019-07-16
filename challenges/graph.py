@@ -3,7 +3,7 @@ from vertex import Vertex
 
 class Graph:
     """
-        An undirected graph implementation
+        Class for representing an undirected graph
     """
 
     def __init__(self):
@@ -16,7 +16,7 @@ class Graph:
 
     def add_vertex(self, vert: Vertex):
         """
-            Add a vertex to the graph
+            Function for adding a vertex to the graph
 
             Args:
             * vertex - The vertex object that we would like to be adding.
@@ -31,10 +31,11 @@ class Graph:
 
     def get_vertex(self, vert_key: str):
         """
-            Get a specific vertex from the set of verticies we have.
+            Function for getting a specific vertex from the set
+            of verticies we have.
 
             Args:
-            * vertKey - the integer of the vert key we're looking for
+            * vert_key - the integer of the vert key we're looking for
 
             Returns:
             * a vertex object if the vertkey is found
@@ -46,7 +47,7 @@ class Graph:
 
     def get_verticies(self):
         """
-            Return a list of all the vertex keys
+            Function for getting a list of all the vertex keys
 
             Returns:
             * a list of all verticies objects within the graph
@@ -55,11 +56,11 @@ class Graph:
 
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
-           Add an edge to the graph
+           Function for adding an edge to the graph
 
            Args:
-           * fromVert - The vertex object we're connecting the toVert to
-           * toVert - The vertex object we're connecting the fromVert to
+           * from_vert - The vertex object we're connecting the toVert to
+           * to_vert - The vertex object we're connecting the fromVert to
            * weight - (1.0) - The weight of the edge
         """
 
@@ -83,7 +84,8 @@ class Graph:
 
     def get_neighbors(self, vert_key: str):
         """
-            Get the neighbors of a vertex stored within the graph.
+            Function for getting the neighbors of a vertex
+            stored within the graph.
 
             Args:
             * vert: The vertex we're trying to get the neighbors of.
@@ -98,7 +100,7 @@ class Graph:
 
     def get_edges(self) -> [tuple]:
         """
-            Get all of the edges from the graph
+            Function for getting all of the edges from the graph
 
             Returns:
             * A list of the unique edges within the graph.

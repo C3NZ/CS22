@@ -3,7 +3,9 @@ from graph import Graph
 
 class Digraph(Graph):
     """
-        A directed graph
+        Class for representing a directed graph
+
+        Inherits properties and functions from the Graph class
     """
 
     def __repr__(self):
@@ -11,7 +13,7 @@ class Digraph(Graph):
 
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
-           Add an edge to the digraph
+           Function for adding an edge to the digraph
 
            Args:
            * fromVert - The vertex object we're connecting the toVert to
@@ -37,7 +39,7 @@ class Digraph(Graph):
 
     def get_edges(self) -> [tuple]:
         """
-            Get all of the edges from the graph
+            Function for getting all of the edges from the graph
 
             Returns:
             * A list of the unique edges within the graph.

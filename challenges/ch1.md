@@ -9,21 +9,24 @@ The vertex object that is to be stored within a graph object
 
 Properties:
 * key - The key or label of the vertex.
-* __neighbors - a list of edges between this vertex and another one.
 
 ### neighbors
 
-Get the keys of the neighbors of the vertex
+Function for getting the keys of the neighbors of the vertex
+
+Returns:
+    A list of all neighbors to the current vertex
 
 ### add_neighbor
 ```python
 Vertex.add_neighbor(self, edge: tuple)
 ```
 
-Add a neighbor to this vertex
+Function for adding a neighbor to this vertex
 
 Args:
-* edge - A tuple containing
+* edge - A tuple containing the vertex object and it's
+corresponding weight
 
 Returns:
 * True if the edge was successfully added, False if not.
@@ -35,14 +38,14 @@ Returns:
 Graph(self)
 ```
 
-An undirected graph implementation
+Class for representing an undirected graph
 
 ### add_vertex
 ```python
 Graph.add_vertex(self, vert: vertex.Vertex)
 ```
 
-Add a vertex to the graph
+Function for adding a vertex to the graph
 
 Args:
 * vertex - The vertex object that we would like to be adding.
@@ -52,10 +55,11 @@ Args:
 Graph.get_vertex(self, vert_key: str)
 ```
 
-Get a specific vertex from the set of verticies we have.
+Function for getting a specific vertex from the set
+of verticies we have.
 
 Args:
-* vertKey - the integer of the vert key we're looking for
+* vert_key - the integer of the vert key we're looking for
 
 Returns:
 * a vertex object if the vertkey is found
@@ -65,7 +69,7 @@ Returns:
 Graph.get_verticies(self)
 ```
 
-Return a list of all the vertex keys
+Function for getting a list of all the vertex keys
 
 Returns:
 * a list of all verticies objects within the graph
@@ -75,11 +79,11 @@ Returns:
 Graph.add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0)
 ```
 
-Add an edge to the graph
+Function for adding an edge to the graph
 
 Args:
-* fromVert - The vertex object we're connecting the toVert to
-* toVert - The vertex object we're connecting the fromVert to
+* from_vert - The vertex object we're connecting the toVert to
+* to_vert - The vertex object we're connecting the fromVert to
 * weight - (1.0) - The weight of the edge
 
 ### get_neighbors
@@ -87,7 +91,8 @@ Args:
 Graph.get_neighbors(self, vert_key: str)
 ```
 
-Get the neighbors of a vertex stored within the graph.
+Function for getting the neighbors of a vertex
+stored within the graph.
 
 Args:
 * vert: The vertex we're trying to get the neighbors of.
@@ -100,7 +105,7 @@ Returns:
 Graph.get_edges(self) -> [<class 'tuple'>]
 ```
 
-Get all of the edges from the graph
+Function for getting all of the edges from the graph
 
 Returns:
 * A list of the unique edges within the graph.
@@ -112,14 +117,16 @@ Returns:
 Digraph(self)
 ```
 
-A directed graph
+Class for representing a directed graph
+
+Inherits properties and functions from the Graph class
 
 ### add_edge
 ```python
 Digraph.add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0)
 ```
 
-Add an edge to the digraph
+Function for adding an edge to the digraph
 
 Args:
 * fromVert - The vertex object we're connecting the toVert to
@@ -131,7 +138,7 @@ Args:
 Digraph.get_edges(self) -> [<class 'tuple'>]
 ```
 
-Get all of the edges from the graph
+Function for getting all of the edges from the graph
 
 Returns:
 * A list of the unique edges within the graph.
