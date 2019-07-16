@@ -18,8 +18,8 @@ class Graph:
         """
             Add a vertex to the graph
 
-            Args:\
-                * vertex - The vertex object that we would like to be adding.
+            Args:
+            * vertex - The vertex object that we would like to be adding.
         """
 
         if vert.key not in self.graph:
@@ -34,10 +34,10 @@ class Graph:
             Get a specific vertex from the set of verticies we have.
 
             Args:
-                vertKey - the integer of the vert key we're looking for
+            * vertKey - the integer of the vert key we're looking for
 
             Returns:
-                a vertex object if the vertkey is found
+            * a vertex object if the vertkey is found
         """
         if vert_key in self.graph:
             return self.graph[vert_key]

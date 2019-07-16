@@ -44,7 +44,8 @@ Graph.add_vertex(self, vert: vertex.Vertex)
 
 Add a vertex to the graph
 
-Args:                * vertex - The vertex object that we would like to be adding.
+Args:
+* vertex - The vertex object that we would like to be adding.
 
 ### get_vertex
 ```python
@@ -54,10 +55,10 @@ Graph.get_vertex(self, vert_key: str)
 Get a specific vertex from the set of verticies we have.
 
 Args:
-    vertKey - the integer of the vert key we're looking for
+* vertKey - the integer of the vert key we're looking for
 
 Returns:
-    a vertex object if the vertkey is found
+* a vertex object if the vertkey is found
 
 ### get_verticies
 ```python
