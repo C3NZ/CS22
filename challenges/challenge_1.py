@@ -12,10 +12,10 @@ def fill_graph(graph: Graph, verts: list, edges: list):
     """
         Fill an undirected graph object with verticies and edges.
 
-        Args:
-            graph - the graph object that is going to be filled
-            verts - A list of vertex objects to add to the graph
-            edges - A list of tuples that contain edge keys and weights.
+        Args:\n
+            graph - the graph object that is going to be filled\n
+            verts - A list of vertex objects to add to the graph\n
+            edges - A list of tuples that contain edge keys and weights.\n
     """
     # Iterate through the verticies.
     for vert in verts:
@@ -39,9 +39,11 @@ def main(filename: str) -> Graph:
         parses it into a graph object
 
         Args:
+
             filename - The name of the file to open
 
         Returns:
+
             A graph object with the specified vertex and edges added
     """
     graph = Graph()

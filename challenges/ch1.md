@@ -45,7 +45,9 @@ Graph.add_vertex(self, vert: vertex.Vertex)
 Add a vertex to the graph
 
 Args:
+
     vertex - The vertex object that we would like to be adding.
+
 
 ### get_vertex
 ```python
