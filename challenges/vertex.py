@@ -18,7 +18,10 @@ class Vertex:
         return hash(self.key)
 
     def __str__(self):
-        return "V-" + str(self.key)
+        return str(self.key)
+
+    def __repr__(self):
+        return str(self.key)
 
     def __in_neighbors(self, vert):
         """

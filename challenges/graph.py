@@ -11,6 +11,9 @@ class Graph:
         self.verticies = 0
         self.edges = 0
 
+    def __repr__(self):
+        return f"<Graph> - {self.verticies} verts - {self.edges} edges"
+
     def add_vertex(self, vert: Vertex):
         """
             Add a vertex to the graph
@@ -104,17 +107,16 @@ class Graph:
         unique_edges: set = set()
 
         # Iterate through all of the edges within the graph
-        for vert_key, vertex in self.graph.items():
+        for vert_key, vert in self.graph.items():
 
             # Iterate through all of the neighbors of the current vertex
-            for neighbor_vert, weight in vertex.neighbors:
+            for neighbor_vert, weight in vert.neighbors:
                 edge = [vert_key, neighbor_vert.key, str(weight)]
                 sorted_edge = tuple(sorted(edge))
 
                 # Check if the sorted edge has been seen before.
                 if sorted_edge not in sorted_edges:
-                    edge[2] = int(weight)
-                    unique_edges.add(tuple(edge))
+                    unique_edges.add(tuple([vert, neighbor_vert, int(weight)]))
 
                 sorted_edges.add(sorted_edge)
 

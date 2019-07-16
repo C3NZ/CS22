@@ -153,7 +153,7 @@ class GraphTest(unittest.TestCase):
             ("a", "b", 10),
         ]
 
-        # Iterate over
+        # Iterate over the edges and put them into the graph
         for edge in edges:
             from_vert, to_vert, weight = edge
             graph.add_edge(from_vert, to_vert, weight)
@@ -168,3 +168,34 @@ class GraphTest(unittest.TestCase):
             ("a", "b", 10),
         ]
         self.assertEqual(len(graph.get_edges()), len(unique_edges))
+
+    def test_get_neighbors(self):
+        graph = Graph()
+
+        # Create verticies
+        v1, v2, v3, v4 = Vertex("k"), Vertex("g"), Vertex("a"), Vertex("b")
+
+        # Add verticies to the list
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+        graph.add_vertex(v4)
+
+        self.assertEqual(graph.verticies, 4)
+        self.assertEqual(graph.edges, 0)
+
+        # create edges (1 duplicate one to demonstrate how it handles duplicates)
+        edges = [
+            ("k", "g", 10),
+            ("g", "a", 4),
+            ("a", "k", 30),
+            ("b", "k", 20),
+            ("a", "b", 10),
+        ]
+
+        # Iterate over the edges and put them into the graph
+        for edge in edges:
+            from_vert, to_vert, weight = edge
+            graph.add_edge(from_vert, to_vert, weight)
+
+        self.assertEqual(graph.edges, 5)
