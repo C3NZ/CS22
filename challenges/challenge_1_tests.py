@@ -96,3 +96,25 @@ class GraphTest(unittest.TestCase):
         self.assertEqual(graph.verticies, 3)
 
         self.assertListEqual(graph.get_verticies(), [v1, v2, v3])
+
+    def test_add_edge(self):
+        graph = Graph()
+
+        # Create verticies
+        v1, v2, v3 = Vertex("k"), Vertex("g"), Vertex("a")
+
+        # Add verticies to the list
+        graph.add_vertex(v1)
+        graph.add_vertex(v2)
+        graph.add_vertex(v3)
+
+        self.assertEqual(graph.verticies, 3)
+        self.assertEqual(graph.edges, 0)
+
+        edges = [("k", "g", 10), ("g", "k", 10), ("g", "a", 4), ("a", "k", 30)]
+
+        for edge in edges:
+            from_vert, to_vert, weight = edge
+            graph.add_edge(from_vert, to_vert, weight)
+
+        self.assertEqual(graph.edges, 3)
