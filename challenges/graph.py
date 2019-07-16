@@ -49,7 +49,7 @@ class Graph:
             Return a list of all the vertex keys
 
             Returns:
-                a list of all verticies objects within the graph
+            * a list of all verticies objects within the graph
         """
         return list(self.graph.values())
 
@@ -58,9 +58,9 @@ class Graph:
            Add an edge to the graph
 
            Args:
-               fromVert - The vertex object we're connecting the toVert to
-               toVert - The vertex object we're connecting the fromVert to
-               weight - (1.0) - The weight of the edge
+           * fromVert - The vertex object we're connecting the toVert to
+           * toVert - The vertex object we're connecting the fromVert to
+           * weight - (1.0) - The weight of the edge
         """
 
         # Error handling before trying to add an edge
@@ -86,10 +86,10 @@ class Graph:
             Get the neighbors of a vertex stored within the graph.
 
             Args:
-                vert: The vertex we're trying to get the neighbors of.
+            * vert: The vertex we're trying to get the neighbors of.
 
             Returns:
-                The neighbors of the vertex that we're looking for
+            * The neighbors of the vertex that we're looking for
         """
         if vert_key not in self.graph:
             raise KeyError("The vertex is not in the graph")
@@ -101,7 +101,7 @@ class Graph:
             Get all of the edges from the graph
 
             Returns:
-                A list of the unique edges within the graph.
+            * A list of the unique edges within the graph.
         """
         sorted_edges: set = set()
         unique_edges: set = set()

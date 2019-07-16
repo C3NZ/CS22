@@ -7,9 +7,9 @@ Vertex(self, key: str)
 
 The vertex object that is to be stored within a graph object
 
-properties:
-    key - The key or label of the vertex.
-    __neighbors - a list of edges between this vertex and another one.
+Properties:
+* key - The key or label of the vertex.
+* __neighbors - a list of edges between this vertex and another one.
 
 ### neighbors
 
@@ -23,10 +23,10 @@ Vertex.add_neighbor(self, edge: tuple)
 Add a neighbor to this vertex
 
 Args:
-    edge - A tuple containing
+* edge - A tuple containing
 
 Returns:
-    True if the edge was successfully added, False if not.
+* True if the edge was successfully added, False if not.
 
 # graph
 
@@ -68,7 +68,7 @@ Graph.get_verticies(self)
 Return a list of all the vertex keys
 
 Returns:
-    a list of all verticies objects within the graph
+* a list of all verticies objects within the graph
 
 ### add_edge
 ```python
@@ -78,9 +78,9 @@ Graph.add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0)
 Add an edge to the graph
 
 Args:
-    fromVert - The vertex object we're connecting the toVert to
-    toVert - The vertex object we're connecting the fromVert to
-    weight - (1.0) - The weight of the edge
+* fromVert - The vertex object we're connecting the toVert to
+* toVert - The vertex object we're connecting the fromVert to
+* weight - (1.0) - The weight of the edge
 
 ### get_neighbors
 ```python
@@ -90,10 +90,10 @@ Graph.get_neighbors(self, vert_key: str)
 Get the neighbors of a vertex stored within the graph.
 
 Args:
-    vert: The vertex we're trying to get the neighbors of.
+* vert: The vertex we're trying to get the neighbors of.
 
 Returns:
-    The neighbors of the vertex that we're looking for
+* The neighbors of the vertex that we're looking for
 
 ### get_edges
 ```python
@@ -103,7 +103,7 @@ Graph.get_edges(self) -> [<class 'tuple'>]
 Get all of the edges from the graph
 
 Returns:
-    A list of the unique edges within the graph.
+* A list of the unique edges within the graph.
 
 # digraph
 
@@ -122,9 +122,9 @@ Digraph.add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0)
 Add an edge to the digraph
 
 Args:
-    fromVert - The vertex object we're connecting the toVert to
-    toVert - The vertex object we're connecting the fromVert to
-    weight - (1.0) - The weight of the edge
+* fromVert - The vertex object we're connecting the toVert to
+* toVert - The vertex object we're connecting the fromVert to
+* weight - (1.0) - The weight of the edge
 
 ### get_edges
 ```python
@@ -134,5 +134,5 @@ Digraph.get_edges(self) -> [<class 'tuple'>]
 Get all of the edges from the graph
 
 Returns:
-    A list of the unique edges within the graph.
+* A list of the unique edges within the graph.
 

@@ -2,9 +2,9 @@ class Vertex:
     """
         The vertex object that is to be stored within a graph object
 
-        properties:
-            key - The key or label of the vertex.
-            __neighbors - a list of edges between this vertex and another one.
+        Properties:
+        * key - The key or label of the vertex.
+        * __neighbors - a list of edges between this vertex and another one.
     """
 
     def __init__(self, key: str):
@@ -28,10 +28,10 @@ class Vertex:
             Check if the vertex is already a neighbor to this current one
 
             Args:
-                vert - The other vertex object we're checking
+            * vert - The other vertex object we're checking
 
             Returns:
-                True if the vert is found, false if not.
+            * True if the vert is found, false if not.
 
         """
         if not self.__neighbors:
@@ -56,10 +56,10 @@ class Vertex:
             Add a neighbor to this vertex
 
             Args:
-                edge - A tuple containing
+            * edge - A tuple containing
 
             Returns:
-                True if the edge was successfully added, False if not.
+            * True if the edge was successfully added, False if not.
         """
         vert, weight = edge
         if not self.__in_neighbors(vert):

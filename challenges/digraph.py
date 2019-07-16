@@ -14,9 +14,9 @@ class Digraph(Graph):
            Add an edge to the digraph
 
            Args:
-               fromVert - The vertex object we're connecting the toVert to
-               toVert - The vertex object we're connecting the fromVert to
-               weight - (1.0) - The weight of the edge
+           * fromVert - The vertex object we're connecting the toVert to
+           * toVert - The vertex object we're connecting the fromVert to
+           * weight - (1.0) - The weight of the edge
         """
 
         # Error handling before trying to add an edge
@@ -40,7 +40,7 @@ class Digraph(Graph):
             Get all of the edges from the graph
 
             Returns:
-                A list of the unique edges within the graph.
+            * A list of the unique edges within the graph.
         """
         unique_edges: set = set()
 
