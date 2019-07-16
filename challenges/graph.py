@@ -93,27 +93,28 @@ class Graph:
 
         return self.graph[vert_key].neighbors
 
-    def get_edges(self):
+    def get_edges(self) -> list:
         """
             Get all of the edges from the graph
 
             Returns:
                 A list of the unique edges within the graph.
         """
-        sorted_edges = set()
-        unique_edges = set()
+        sorted_edges: set = set()
+        unique_edges: set = set()
 
         # Iterate through all of the edges within the graph
         for vert_key, vertex in self.graph.items():
 
             # Iterate through all of the neighbors of the current vertex
             for neighbor_vert, weight in vertex.neighbors:
-                edge = (vert_key, neighbor_vert.key, str(weight))
+                edge = [vert_key, neighbor_vert.key, str(weight)]
                 sorted_edge = tuple(sorted(edge))
 
                 # Check if the sorted edge has been seen before.
                 if sorted_edge not in sorted_edges:
-                    unique_edges.add(edge)
+                    edge[2] = int(weight)
+                    unique_edges.add(tuple(edge))
 
                 sorted_edges.add(sorted_edge)
 
