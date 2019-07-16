@@ -48,7 +48,7 @@ class Graph:
             Returns:
                 a list of all verticies objects within the graph
         """
-        return self.graph.keys()
+        return list(self.graph.values())
 
     def add_edge(self, from_vert: str, to_vert: str, weight: float = 1.0):
         """
