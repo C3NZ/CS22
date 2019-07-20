@@ -367,3 +367,6 @@ class DigraphTest(unittest.TestCase):
             graph.add_edge(from_vert, to_vert, weight)
 
         self.assertEqual(graph.edges, 5)
+
+        # Testing vertex 1 neighbors
+        self.assertIn((v2, 10), v1.neighbors)
