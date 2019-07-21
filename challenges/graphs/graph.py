@@ -1,4 +1,7 @@
-from vertex import Vertex
+"""
+    Module that implements an undirected graph class
+"""
+from graphs.vertex import Vertex
 
 
 class Graph:

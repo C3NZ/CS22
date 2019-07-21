@@ -1,3 +1,8 @@
+"""
+    Module that handles the Vertex objects to be inserted into any graph type.
+"""
+
+
 class Vertex:
     """
         The vertex object that is to be stored within a graph object

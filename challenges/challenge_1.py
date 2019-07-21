@@ -3,9 +3,9 @@
 """
 import argparse
 
-from challenges.graphs.digraph import Digraph
-from challenges.graphs.graph import Graph
-from challenges.graphs.vertex import Vertex
+from graphs.digraph import Digraph
+from graphs.graph import Graph
+from graphs.vertex import Vertex
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):

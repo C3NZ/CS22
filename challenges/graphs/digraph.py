@@ -1,4 +1,8 @@
-from graph import Graph
+"""
+    Module that implements a directed graph class through the extension of the
+    undirected graph class (from challenges.graphs.graph)
+"""
+from graphs.graph import Graph
 
 
 class Digraph(Graph):
