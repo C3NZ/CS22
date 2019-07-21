@@ -33,7 +33,16 @@ def fill_graph(graph: Graph, verts: list, edges: list):
             graph.add_edge(from_vert, to_vert, weight)
 
 
-def read_graph_file(filename: str):
+def read_graph_file(filename: str) -> (Graph, [Vertex], [tuple]):
+    """
+        Read a graph file from the class specified format.
+
+        Args:
+        * filename - Read in the file specified by filename 
+
+        Returns:
+            A tuple that contains a graph object and two lists
+    """
     graph = Graph()
     verts = []
     edges = []
