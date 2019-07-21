@@ -4,82 +4,9 @@
 import argparse
 
 from graphs.digraph import Digraph
-from graphs.graph import Graph
+from graphs.graph import Graph, fill_graph
+from graphs.utils.file_reader import read_graph_file
 from graphs.vertex import Vertex
-
-
-def fill_graph(graph: Graph, verts: list, edges: list):
-    """
-        Fill an undirected graph object with verticies and edges.
-
-        Args:
-            graph - the graph object that is going to be filled\n
-            verts - A list of vertex objects to add to the graph\n
-            edges - A list of tuples that contain edge keys and weights.\n
-    """
-    # Iterate through the verticies.
-    for vert in verts:
-        graph.add_vertex(vert)
-
-    # Iterate through the edges and add it to the graph.
-    for edge in edges:
-        from_vert, to_vert = edge[0], edge[1]
-
-        # Check if the edge is already weighted
-        if len(edge) == 2:
-            graph.add_edge(from_vert, to_vert)
-        else:
-            weight = edge[2]
-            graph.add_edge(from_vert, to_vert, weight)
-
-
-def read_graph_file(filename: str) -> (Graph, [Vertex], [tuple]):
-    """
-        Read a graph file from the class specified format.
-
-        Args:
-        * filename - Read in the file specified by filename 
-
-        Returns:
-            A tuple that contains a graph object and two lists
-    """
-    graph = Graph()
-    verts = []
-    edges = []
-
-    # Open up the file and parse the graph from text
-    with open(filename, "r") as file:
-        counter = 0
-
-        # Iterate through the file
-        for line in file:
-
-            # Obtain the type of graph
-            if counter == 0:
-                graph_type = line.strip()
-                if graph_type == "G":
-                    graph = Graph()
-                elif graph_type == "D":
-                    graph = Digraph()
-                else:
-                    raise ValueError("Graph type not properly specified")
-
-            # Obtain the verticies for the graph.
-            elif counter == 1:
-                for key in line.strip().split(","):
-                    verts.append(Vertex(key))
-
-            # Obtain all the edges.
-            elif counter > 1:
-                edge = line.strip("()\n").split(",")
-                if len(edge) != 3 and len(edge) != 2:
-                    raise ValueError(
-                        f"You specified an incorrect amount of args for the edge: {line}"
-                    )
-                edges.append(edge)
-            counter += 1
-
-    return graph, verts, edges
 
 
 def main(filename: str) -> Graph:

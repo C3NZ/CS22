@@ -126,3 +126,30 @@ class Graph:
                 sorted_edges.add(sorted_edge)
 
         return list(unique_edges)
+
+
+def fill_graph(graph: Graph, verts: list, edges: list):
+    """
+        Fill an undirected graph object with verticies and edges.
+
+        Args:
+            graph - the graph object that is going to be filled\n
+            verts - A list of vertex objects to add to the graph\n
+            edges - A list of tuples that contain edge keys and weights.\n
+    """
+    # Iterate through the verticies.
+    for vert in verts:
+        graph.add_vertex(vert)
+
+    # Iterate through the edges and add it to the graph.
+    for edge in edges:
+        from_vert, to_vert = edge[0], edge[1]
+
+        # Check if the edge is already weighted
+        if len(edge) == 2:
+            graph.add_edge(from_vert, to_vert)
+        else:
+            weight = edge[2]
+            graph.add_edge(from_vert, to_vert, weight)
+
+    return graph, verts, edges
