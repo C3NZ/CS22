@@ -3,9 +3,9 @@
 """
 import unittest
 
-from digraph import Digraph
-from graph import Graph
-from vertex import Vertex
+from graphs.digraph import Digraph
+from graphs.graph import Graph
+from graphs.vertex import Vertex
 
 
 class VertexTest(unittest.TestCase):
