@@ -33,19 +33,7 @@ def fill_graph(graph: Graph, verts: list, edges: list):
             graph.add_edge(from_vert, to_vert, weight)
 
 
-def main(filename: str) -> Graph:
-    """
-        Main functionality of the app, opens the file and then
-        parses it into a graph object
-
-        Args:
-
-            filename - The name of the file to open
-
-        Returns:
-
-            A graph object with the specified vertex and edges added
-    """
+def read_graph_file(filename: str):
     graph = Graph()
     verts = []
     edges = []
@@ -81,6 +69,24 @@ def main(filename: str) -> Graph:
                     )
                 edges.append(edge)
             counter += 1
+
+    return graph, verts, edges
+
+
+def main(filename: str) -> Graph:
+    """
+        Main functionality of the app, opens the file and then
+        parses it into a graph object
+
+        Args:
+
+            filename - The name of the file to open
+
+        Returns:
+
+            A graph object with the specified vertex and edges added
+    """
+    graph, verts, edges = read_graph_file(filename)
 
     # Fill the graph with the necessary items
     fill_graph(graph, verts, edges)
