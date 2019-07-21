@@ -3,16 +3,16 @@
 """
 import argparse
 
-from digraph import Digraph
-from graph import Graph
-from vertex import Vertex
+from challenges.graphs.digraph import Digraph
+from challenges.graphs.graph import Graph
+from challenges.graphs.vertex import Vertex
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
     """
         Fill an undirected graph object with verticies and edges.
 
-        Args:\n
+        Args:
             graph - the graph object that is going to be filled\n
             verts - A list of vertex objects to add to the graph\n
             edges - A list of tuples that contain edge keys and weights.\n
