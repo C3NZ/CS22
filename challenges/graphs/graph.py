@@ -132,7 +132,9 @@ class Graph:
     def find_shortest_path(self, from_vertex: str, to_vertex: str) -> [str]:
         """
             Finding the shortest path from one vertex to another using breadth first
-            search.
+            search. This algorithm attaches a parent property to all vertices that
+            are neighbors to the vertex that we're traveling from, allowing us to
+            traverse back up the tree to get the path at the end
 
             Args:
             * from_vertex - The key of the vertex we're starting at
@@ -152,18 +154,20 @@ class Graph:
         if from_vertex == to_vertex:
             return [from_vertex], 0
 
-        # Initialize the start vertex, the seen nodes, and the queue
-        start_vertex = self.graph[from_vertex]
+        # Initialize the current vertex, the seen nodes, and the queue
+        curr_vertex = self.graph[from_vertex]
         seen_nodes = set()
         queue = deque()
 
         # Start the traversal.
-        queue.append(start_vertex)
-        seen_nodes.add(start_vertex.key)
+        queue.append(curr_vertex)
+        seen_nodes.add(curr_vertex.key)
 
         # Start the path
         path = []
         path_found = False
+        parent = None
+        curr_vertex.parent = parent
 
         # Keep traversing while there are still items on the queue
         while queue:
@@ -176,17 +180,24 @@ class Graph:
                 break
 
             # Iterate through all of the neighbors
-            for neighbor in curr_vertex.neighbors:
+            for neighbor, _ in curr_vertex.neighbors:
 
                 # Add the neighbor to the queue if it hasn't been seen
                 if neighbor.key not in seen_nodes:
                     queue.append(neighbor)
                     seen_nodes.add(neighbor.key)
+                    neighbor.parent = curr_vertex
 
         if path_found:
-            return path, len(path) - 1
-        else:
-            return [], -1
+            path = []
+            while curr_vertex is not None:
+                path.append(curr_vertex)
+                curr_vertex = curr_vertex.parent
+
+            return path[::-1], len(path) - 1
+
+        # No path was found, infinite amount of edges in between from vert and to vert.
+        return [], -1
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
