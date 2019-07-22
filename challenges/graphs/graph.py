@@ -1,6 +1,8 @@
 """
     Module that implements an undirected graph class
 """
+from collections import deque
+
 from graphs.vertex import Vertex
 
 
@@ -126,6 +128,54 @@ class Graph:
                 sorted_edges.add(sorted_edge)
 
         return list(unique_edges)
+
+    def breadth_first_search(self, from_vertex: str, to_vertex: str) -> [str]:
+        """
+            Breadth first search algorithm for finding a path to the from vertex
+        """
+        if from_vertex not in self.graph or to_vertex not in self.graph:
+            raise KeyError("One of the verticies is not inside of the graph!")
+
+        # If they are the same vertex, the path is itself and the # of edges
+        # is 0!
+        if from_vertex == to_vertex:
+            return [from_vertex], 0
+
+        # Initialize the start vertex, the seen nodes, and the queue
+        start_vertex = self.graph[from_vertex]
+        seen_nodes = set()
+        queue = deque()
+
+        # Start the traversal.
+        queue.append(start_vertex)
+        seen_nodes.add(start_vertex.key)
+
+        # Start the path
+        path = []
+        path_found = False
+
+        # Keep traversing while there are still items on the queue
+        while queue:
+            curr_vertex = queue.popleft()
+            path.append(curr_vertex)
+
+            # Check if we made it to our destination
+            if curr_vertex.key == to_vertex:
+                path_found = True
+                break
+
+            # Iterate through all of the neighbors
+            for neighbor in curr_vertex.neighbors:
+
+                # Add the neighbor to the queue if it hasn't been seen
+                if neighbor.key not in seen_nodes:
+                    queue.append(neighbor)
+                    seen_nodes.add(neighbor.key)
+
+        if path_found:
+            return path, len(path) - 1
+        else:
+            return [], float("Inf")
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
