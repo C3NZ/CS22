@@ -15,13 +15,13 @@ class BreadthTest(unittest.TestCase):
         """
         graph = Graph()
         vertices = [
-            Vertex("a"),
-            Vertex("b"),
-            Vertex("c"),
-            Vertex("d"),
-            Vertex("e"),
-            Vertex("f"),
-            Vertex("g"),
+            Vertex("a"),  # 0
+            Vertex("b"),  # 1
+            Vertex("c"),  # 2
+            Vertex("d"),  # 3
+            Vertex("e"),  # 4
+            Vertex("f"),  # 5
+            Vertex("g"),  # 6
         ]
         edges = [
             ("a", "b", 2),
@@ -41,3 +41,17 @@ class BreadthTest(unittest.TestCase):
 
         with self.assertRaises(KeyError):
             graph.find_shortest_path("a", "3")
+
+        self.assertEqual(graph.find_shortest_path("a", "a"), ([vertices[0]], 0))
+        self.assertEqual(graph.find_shortest_path("a", "f"), ([], -1))
+        self.assertEqual(
+            graph.find_shortest_path("a", "e"),
+            ([vertices[0], vertices[1], vertices[4]], 2),
+        )
+
+        # Testing from vertices A -> G
+        # Should be connected from: a -> c -> d -> g
+        pred_path, pred_edges = graph.find_shortest_path("a", "g")
+        actual_path = [vertices[0], vertices[2], vertices[3], vertices[6]]
+        actual_edges = 3
+        self.assertEqual((pred_path, pred_edges), (actual_path, actual_edges))

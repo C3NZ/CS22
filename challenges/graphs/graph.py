@@ -134,7 +134,9 @@ class Graph:
             Finding the shortest path from one vertex to another using breadth first
             search. This algorithm attaches a parent property to all vertices that
             are neighbors to the vertex that we're traveling from, allowing us to
-            traverse back up the tree to get the path at the end
+            traverse back up the tree to get the path at the end.
+
+            Read more: https://en.wikipedia.org/wiki/Breadth-first_search
 
             Args:
             * from_vertex - The key of the vertex we're starting at
@@ -152,7 +154,8 @@ class Graph:
         # If they are the same vertex, the path is itself and the # of edges
         # is 0!
         if from_vertex == to_vertex:
-            return [from_vertex], 0
+            vert_obj = self.graph[from_vertex]
+            return [vert_obj], 0
 
         # Initialize the current vertex, the seen nodes, and the queue
         curr_vertex = self.graph[from_vertex]
@@ -188,8 +191,11 @@ class Graph:
                     seen_nodes.add(neighbor.key)
                     neighbor.parent = curr_vertex
 
+        # If there was a path found, we traverse the up the tree.
         if path_found:
             path = []
+
+            # Traversal up the tree.
             while curr_vertex is not None:
                 path.append(curr_vertex)
                 curr_vertex = curr_vertex.parent

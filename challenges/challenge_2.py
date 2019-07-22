@@ -1,7 +1,13 @@
 import argparse
 
+from graphs.graph import fill_graph
+from graphs.utils.file_reader import read_graph_file
+
 
 def process_args():
+    """
+        Process the arguments for challenge 2
+    """
     parser = argparse.ArgumentParser(
         description="Find the shortest path between two verticies"
     )
@@ -16,8 +22,11 @@ def process_args():
 
 def main(args: argparse.Namespace):
     """
-        Process the arguments and find the shortest path
+        The main functionality of challenge 2. Handles input errors, creates the graph with
+        the specified properties, and then finds the shortest path from two edges.
     """
+
+    # Input checks
     if not args.filename:
         raise ValueError("There was no graph file path specified!")
 
@@ -26,6 +35,13 @@ def main(args: argparse.Namespace):
 
     if not args.to_vert:
         raise ValueError("You didn't specify a to vertex to start at!")
+
+    # Obtain the graph properties and then fill out the graph.
+    graph, vertex, edges = read_graph_file(args.filename)
+    fill_graph(graph, vertex, edges)
+
+    # Obtain the path and edges to get from one vertex to another
+    path, edges = graph.find_shortest_path(args.from_vertex, args.to_vertex)
 
 
 if __name__ == "__main__":
