@@ -11,7 +11,7 @@ def read_graph_file(filename: str) -> (Graph, [Vertex], [tuple]):
         Read a graph file from the class specified format.
 
         Args:
-        * filename - Read in the file specified by filename 
+        * filename - Read in the file specified by filename
 
         Returns:
             A tuple that contains a graph object and two lists
@@ -19,6 +19,7 @@ def read_graph_file(filename: str) -> (Graph, [Vertex], [tuple]):
     graph = Graph()
     verts = []
     edges = []
+    is_weighted = None
 
     # Open up the file and parse the graph from text
     with open(filename, "r") as file:
@@ -45,6 +46,13 @@ def read_graph_file(filename: str) -> (Graph, [Vertex], [tuple]):
             # Obtain all the edges.
             elif counter > 1:
                 edge = line.strip("()\n").split(",")
+                if is_weighted is None:
+                    is_weighted = bool(len(edge) == 3)
+                elif is_weighted and len(edge) < 3:
+                    raise ValueError(
+                        "You specified an edge with weights and one without. You should only do one or the other."
+                    )
+
                 if len(edge) != 3 and len(edge) != 2:
                     raise ValueError(
                         f"You specified an incorrect amount of args for the edge: {line}"
