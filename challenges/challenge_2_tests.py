@@ -42,12 +42,26 @@ class BreadthTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             graph.find_shortest_path("a", "3")
 
-        self.assertEqual(graph.find_shortest_path("a", "a"), ([vertices[0]], 0))
-        self.assertEqual(graph.find_shortest_path("a", "f"), ([], -1))
-        self.assertEqual(
-            graph.find_shortest_path("a", "e"),
-            ([vertices[0], vertices[1], vertices[4]], 2),
-        )
+        # Testing from vertex A -> A
+        # Should have no edges and be connected to just itself.
+        pred_path, pred_edges = graph.find_shortest_path("a", "a")
+        actual_path = [vertices[0]]
+        actual_edges = 0
+        self.assertEqual((pred_path, pred_edges), (actual_path, actual_edges))
+
+        # Testing from vertex A -> F
+        # Should have no connection and infinite (-1) edges
+        pred_path, pred_edges = graph.find_shortest_path("a", "f")
+        actual_path = []
+        actual_edges = -1
+        self.assertEqual((pred_path, pred_edges), (actual_path, actual_edges))
+
+        # Testing from vertex A -> E
+        # Should have a path from a -> b -> e with 2 edges
+        pred_path, pred_edges = graph.find_shortest_path("a", "e")
+        actual_path = [vertices[0], vertices[1], vertices[4]]
+        actual_edges = 2
+        self.assertEqual((pred_path, pred_edges), (actual_path, actual_edges))
 
         # Testing from vertices A -> G
         # Should be connected from: a -> c -> d -> g
