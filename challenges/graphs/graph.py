@@ -129,9 +129,20 @@ class Graph:
 
         return list(unique_edges)
 
-    def breadth_first_search(self, from_vertex: str, to_vertex: str) -> [str]:
+    def find_shortest_path(self, from_vertex: str, to_vertex: str) -> [str]:
         """
-            Breadth first search algorithm for finding a path to the from vertex
+            Finding the shortest path from one vertex to another using breadth first
+            search.
+
+            Args:
+            * from_vertex - The key of the vertex we're starting at
+            * to_vertex - The key of the vertex we're going to
+
+            Returns:
+            * A list of vertex keys and the amount of edges if there is a valid
+            path within the graph
+            * An empty list and -1 indicating that there are no paths between the
+            two vertices within the list
         """
         if from_vertex not in self.graph or to_vertex not in self.graph:
             raise KeyError("One of the verticies is not inside of the graph!")
@@ -175,7 +186,7 @@ class Graph:
         if path_found:
             return path, len(path) - 1
         else:
-            return [], float("Inf")
+            return [], -1
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
