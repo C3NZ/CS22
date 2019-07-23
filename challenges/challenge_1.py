@@ -3,10 +3,8 @@
 """
 import argparse
 
-from graphs.digraph import Digraph
 from graphs.graph import Graph, fill_graph
 from graphs.utils.file_reader import read_graph_file
-from graphs.vertex import Vertex
 
 
 def main(filename: str) -> Graph:

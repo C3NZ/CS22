@@ -39,6 +39,7 @@ class BreadthTest(unittest.TestCase):
             from_vert, to_vert, weight = edge
             graph.add_edge(from_vert, to_vert, weight)
 
+        # Should throw an error, there is no key 3!
         with self.assertRaises(KeyError):
             graph.find_shortest_path("a", "3")
 
