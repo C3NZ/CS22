@@ -189,6 +189,7 @@ class Graph:
                 if neighbor.key not in seen_nodes:
                     queue.append(neighbor)
                     seen_nodes.add(neighbor.key)
+                    # Set the parent of the neighbor to the current node that we're on
                     neighbor.parent = curr_vertex
 
         # If there was a path found, we traverse the up the tree.
@@ -200,6 +201,7 @@ class Graph:
                 path.append(curr_vertex)
                 curr_vertex = curr_vertex.parent
 
+            # Return the list reversed, since we traverse the tree backwards.
             return path[::-1], len(path) - 1
 
         # No path was found, infinite amount of edges in between from vert and to vert.
@@ -211,9 +213,12 @@ def fill_graph(graph: Graph, verts: list, edges: list):
         Fill an undirected graph object with verticies and edges.
 
         Args:
-            graph - the graph object that is going to be filled\n
-            verts - A list of vertex objects to add to the graph\n
-            edges - A list of tuples that contain edge keys and weights.\n
+        * graph - the graph object that is going to be filled\n
+        * verts - A list of vertex objects to add to the graph\n
+        * edges - A list of tuples that contain edge keys and weights.\n
+
+        Returns:
+        A reference to the graph, vertices, and edges.
     """
     # Iterate through the verticies.
     for vert in verts:
