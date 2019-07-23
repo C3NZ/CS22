@@ -6,4 +6,4 @@
 This is a repository for my CS2.2 Graph class.
 
 ## Documentation
-All documentation for the project can be found [here](docs.md)
+All documentation for the project can be found [here](challenges/docs.md)
