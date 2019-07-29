@@ -37,7 +37,6 @@ class Digraph(Graph):
 
         # Add the neighbors to the vertex
         added_from = from_vert_obj.add_neighbor((to_vert_obj, weight))
-
         if added_from:
             self.edges += 1
 

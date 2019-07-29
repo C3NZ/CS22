@@ -207,7 +207,7 @@ class Graph:
         # No path was found, infinite amount of edges in between from vert and to vert.
         return [], -1
 
-    def dfs(self, from_vert: str, to_vert: str, seen_verts: set = set()):
+    def dfs(self, from_vert: str, to_vert: str, seen_verts: set):
         """
             Find if a path exists between two vertices inside the graph
 
@@ -217,7 +217,7 @@ class Graph:
             * seen_verts - A set to keep track of the seen vertices 
 
             Returns:
-            * None if no path is found or a list of vertices if the path is found.
+            * An empty list if no path is found or a list of vertices if the path is found.
 
         """
         # Error handling to make sure that both the vertices are in the graph
@@ -235,19 +235,17 @@ class Graph:
 
         # Iterate through the neighbors of the current vertex
         for neighbor, _ in curr_vert.neighbors:
-
             # Check if we haven't already seen it
             if neighbor.key not in seen_verts:
                 # Travel down the next path from the current vertex to the next
                 next_path: list = self.dfs(neighbor.key, to_vert, seen_verts)
-
                 # If there is a path returned from recursive call, we keep backtracking
                 # to create the path
                 if next_path:
                     next_path.append(curr_vert)
                     return next_path
 
-        return None
+        return []
 
     def find_path(self, from_vert: str, to_vert: str):
         """
@@ -261,13 +259,13 @@ class Graph:
             Returns:
             The path we're between two vertices if they're found, None otherwise.
         """
-        path = self.dfs(from_vert, to_vert)
+        path = self.dfs(from_vert, to_vert, set())
 
         # If a path was found, reverse it to get the correct order
         if path:
             return path[::-1]
 
-        return None
+        return []
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
