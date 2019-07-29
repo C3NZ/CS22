@@ -216,6 +216,9 @@ class Graph:
             * to_vert - The key of the to vertex
             * seen_verts - A set to keep track of the seen vertices 
 
+            Returns:
+            * None if no path is found or a list of vertices if the path is found.
+
         """
         # Error handling to make sure that both the vertices are in the graph
         if from_vert not in self.graph or to_vert not in self.graph:
