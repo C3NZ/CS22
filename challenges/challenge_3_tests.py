@@ -1,3 +1,6 @@
+"""
+    All test cases for challenge 3
+"""
 import unittest
 
 from graphs.digraph import Digraph
@@ -6,7 +9,14 @@ from graphs.vertex import Vertex
 
 
 class DepthFirstSearch(unittest.TestCase):
+    """
+        Test the depth first search function for challenge 3
+    """
+
     def test_dfs(self):
+        """
+            Testing DFS within the graph to find if a path exists.
+        """
         graph = Digraph()
 
         vertices = [
@@ -67,6 +77,8 @@ class DepthFirstSearch(unittest.TestCase):
         pred_path = graph.find_path("4", "7")
         self.assertListEqual(pred_path, actual_path)
 
+        # Testing another normal path
+        # 4 -> 2 -> 1 -> 9 -> 10 -> 11
         actual_path = [
             vertices[0],
             vertices[1],
