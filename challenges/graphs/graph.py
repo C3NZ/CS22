@@ -207,6 +207,45 @@ class Graph:
         # No path was found, infinite amount of edges in between from vert and to vert.
         return [], -1
 
+    def find_path(self, from_vert: str, to_vert: str, seen_verts: set = set()):
+        """
+            Find if a path exists between two vertices inside the graph
+
+            Args:
+            * from_vert - The key of the starting vertex
+            * to_vert - The key of the to vertex
+            * seen_verts - A set to keep track of the seen vertices 
+
+        """
+        # Error handling to make sure that both the vertices are in the graph
+        if from_vert not in self.graph or to_vert not in self.graph:
+            raise KeyError("Either or both of the keys are not in the graph!")
+
+        # Add the current vertex to seen vertices
+        curr_vert = self.graph[from_vert]
+        seen_verts.add(curr_vert.key)
+
+        # If we've found the vertex we're looking for, return it within a list
+        # starting the path
+        if from_vert == to_vert:
+            return [curr_vert]
+
+        # Iterate through the neighbors of the current vertex
+        for neighbor, _ in curr_vert.neighbors:
+
+            # Check if we haven't already seen it
+            if neighbor.key not in seen_verts:
+                # Travel down the next path from the current vertex to the next
+                next_path: list = self.find_path(neighbor.key, to_vert, seen_verts)
+
+                # If there is a path returned from recursive call, we keep backtracking
+                # to create the path
+                if next_path:
+                    next_path.insert(0, curr_vert)
+                    return next_path
+
+        return None
+
 
 def fill_graph(graph: Graph, verts: list, edges: list):
     """
