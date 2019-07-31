@@ -271,6 +271,21 @@ class Graph:
     def create_min_tree(self):
         pass
 
+    def _get_path_length(self, curr_vert, path):
+        tracing = True
+        total_weight = 0
+        while tracing:
+            print(curr_vert)
+            vert_key = curr_vert.key
+            prev_weight, prev_vert = path[vert_key]
+            total_weight += prev_weight
+            curr_vert = prev_vert
+
+            if not curr_vert:
+                tracing = False
+
+        return total_weight
+
     def find_min_weight(self, from_vert: str, to_vert: str):
         if from_vert not in self.graph or to_vert not in self.graph:
             raise KeyError("Either or both of the keys are not in the graph!")
@@ -281,23 +296,45 @@ class Graph:
         if from_vert == to_vert:
             return [starting_vert], 0
 
+        # Initialize our path and priority queue
         queue = PriorityQueue()
         queue.put(PriorityEntry(0, starting_vert))
-        smallest_weights = {starting_vert.key: (0, None)}
+        path = {starting_vert.key: (0, None)}
 
+        # Iterate through all the verts and enqueue them
         for vert_key, vert in self.graph.items():
             if vert_key != starting_vert.key:
-                smallest_weights[vert_key] = (float("inf"), None)
+                path[vert_key] = (float("inf"), None)
                 queue.put(PriorityEntry(float("inf"), vert))
 
+        # While the queue isn't empty
         while not queue.empty():
-            curr_vert = queue.get()
-            curr_vert_weight, prev = smallest_weights[curr_vert.key]
-            for neighbor, weight in curr_vert.neighbors:
-                if weight < curr_vert_weight:
-                    smallest_weights[curr_vert.key] = (weight, prev)
 
-        print(smallest_weights)
+            # Grab the piece of data from the queue and get it's current weight
+            curr_vert = queue.get().data
+            print(curr_vert)
+            curr_vert_weight, _ = path[curr_vert.key]
+
+            # Iterate through the neighbors of the current vertex
+            for neighbor, weight in curr_vert.neighbors:
+                print(f"- {neighbor}")
+                # Get the neighbors weight
+                prev_neighbor_weight, _ = path[neighbor.key]
+                total_weight = weight + curr_vert_weight
+
+                # Check if the new total weight is greater than what the neighbors previous weight
+                # is
+                if total_weight < prev_neighbor_weight:
+                    path[neighbor.key] = (total_weight, curr_vert)
+                    queue.put(PriorityEntry(total_weight, neighbor))
+
+        overall_weight, prev = path[to_vert]
+        minimal_path = [self.graph[to_vert]]
+        while prev:
+            minimal_path.append(prev)
+            _, prev = path[prev.key]
+
+        print(minimal_path[::-1])
 
 
 class PriorityEntry(object):
