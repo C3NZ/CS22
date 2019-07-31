@@ -2,6 +2,7 @@
     Module that implements an undirected graph class
 """
 from collections import deque
+from queue import PriorityQueue
 
 from graphs.vertex import Vertex
 
@@ -266,6 +267,54 @@ class Graph:
             return path[::-1]
 
         return []
+
+    def create_min_tree(self):
+        pass
+
+    def find_min_weight(self, from_vert: str, to_vert: str):
+        if from_vert not in self.graph or to_vert not in self.graph:
+            raise KeyError("Either or both of the keys are not in the graph!")
+
+        starting_vert = self.graph[from_vert]
+
+        # Vertex is to itself, no edges which means no weight!
+        if from_vert == to_vert:
+            return [starting_vert], 0
+
+        queue = PriorityQueue()
+        queue.put(PriorityEntry(0, starting_vert))
+        smallest_weights = {starting_vert.key: (0, None)}
+
+        for vert_key, vert in self.graph.items():
+            if vert_key != starting_vert.key:
+                smallest_weights[vert_key] = (float("inf"), None)
+                queue.put(PriorityEntry(float("inf"), vert))
+
+        while not queue.empty():
+            curr_vert = queue.get()
+            curr_vert_weight, prev = smallest_weights[curr_vert.key]
+            for neighbor, weight in curr_vert.neighbors:
+                if weight < curr_vert_weight:
+                    smallest_weights[curr_vert.key] = (weight, prev)
+
+        print(smallest_weights)
+
+
+class PriorityEntry(object):
+    """
+        Priority entry wrapper from the help of stack overflow
+        question: https://stackoverflow.com/questions/40205223/priority-queue-with-tuples-and-dicts
+
+        Wraps the information that we're enqueuing into the priority queue
+        in an object that has a designated priority (the edge weights)
+    """
+
+    def __init__(self, priority, data):
+        self.data = data
+        self.priority = priority
+
+    def __lt__(self, other):
+        return self.priority < other.priority
 
 
 def fill_graph(graph: Graph, verts: list, edges: list):
