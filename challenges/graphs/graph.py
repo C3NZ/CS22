@@ -296,7 +296,7 @@ class Graph:
         if from_vert == to_vert:
             return [starting_vert], 0
 
-        # Initialize our path and priority queue
+        # Initialize our priority queue and path
         queue = PriorityQueue()
         queue.put(PriorityEntry(0, starting_vert))
         path = {starting_vert.key: (0, None)}
@@ -328,13 +328,20 @@ class Graph:
                     path[neighbor.key] = (total_weight, curr_vert)
                     queue.put(PriorityEntry(total_weight, neighbor))
 
+        # No path was found to the vertex, infinite weight away.
         overall_weight, prev = path[to_vert]
+        if overall_weight == float("inf"):
+            return [], overall_weight
+
+        # Recreate the path
         minimal_path = [self.graph[to_vert]]
         while prev:
             minimal_path.append(prev)
             _, prev = path[prev.key]
 
         print(minimal_path[::-1])
+
+        return minimal_path, overall_weight
 
 
 class PriorityEntry(object):
