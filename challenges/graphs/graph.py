@@ -269,24 +269,25 @@ class Graph:
         return []
 
     def create_min_tree(self):
+        """
+            Create a minimum spanning tree using Primms algorithm
+        """
+        tree = []
+        seen_verts = set()
         pass
 
-    def _get_path_length(self, curr_vert, path):
-        tracing = True
-        total_weight = 0
-        while tracing:
-            print(curr_vert)
-            vert_key = curr_vert.key
-            prev_weight, prev_vert = path[vert_key]
-            total_weight += prev_weight
-            curr_vert = prev_vert
+    def find_min_weight_path(self, from_vert: str, to_vert: str):
+        """
+            Find the minimum weighted path from a vertex to another using
+            Dijstrka's algorithm: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
-            if not curr_vert:
-                tracing = False
+            Args:
+            * from_vert - the vertex key to start at.
+            * to_vert - the vertex key to end at.
 
-        return total_weight
-
-    def find_min_weight(self, from_vert: str, to_vert: str):
+            Returns:
+            The path from the from_vert to to_vert and the total weight of the path.
+        """
         if from_vert not in self.graph or to_vert not in self.graph:
             raise KeyError("Either or both of the keys are not in the graph!")
 
@@ -312,12 +313,11 @@ class Graph:
 
             # Grab the piece of data from the queue and get it's current weight
             curr_vert = queue.get().data
-            print(curr_vert)
             curr_vert_weight, _ = path[curr_vert.key]
 
             # Iterate through the neighbors of the current vertex
             for neighbor, weight in curr_vert.neighbors:
-                print(f"- {neighbor}")
+
                 # Get the neighbors weight
                 prev_neighbor_weight, _ = path[neighbor.key]
                 total_weight = weight + curr_vert_weight
