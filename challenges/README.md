@@ -82,4 +82,8 @@ For every recursive call, this returns the maximum value of one simple decision:
 Did taking the current item yield a better value than not taking the current item?
 If so, let's take it and it's value. If not, let's ignore this item and take the value without it.
 
+### Resources used for Knapsack problem
+[MIT opencourseware: Optimization problems](https://www.youtube.com/watch?v=uK5yvoXnkSk)
+[CS Dojo: 0/1 Fractional knapsack problem](https://www.youtube.com/watch?v=xOlhR_2QCXY)
+[Geeks for Geeks 0-1 knapsack problem](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/)
 
