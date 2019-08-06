@@ -2,6 +2,8 @@
     Solving the knapsack and another dynamic programming problem
     of my choice.
 """
+import timeit
+import types
 
 
 class Item:
@@ -34,17 +36,34 @@ class Item:
         return str(self)
 
 
-def simple_knapsack(capacity, items, cost_func, curr_index=None):
+def simple_knapsack(
+    capacity: int, items: [Item], cost_func: types.FunctionType, curr_index: int = None
+):
     """
-        Simple knapsack solution that has a naive approach of finding the best
-        items
-    """
-    # If there is no more space left or we've traversed all the items, return
-    # 0, as we can't go further
+        Simple knapsack solution that naively approaches solving the knapsack problem. The algorithm
+        solves the problem by breaking the problem into the smallest possible state where we have
+        either no items or no more capacity left. It then builds up from that state 
+        adding one or no items at a time, evaluating which decision has lead
+        to a more optimal solution to the sub problem. It then builds up these subproblems
+        to get an overall solution that has looked at every item in the bag.
 
+
+        Args:
+        * capacity - The capacity of the knapsack as an int.
+        * items - A list of item objects for choosing from
+        * cost_func - The cost function to determine the value of each items
+        * curr_index [None] - The current index of the item we're looking at inside
+        of the items.
+
+        Returns:
+        * A tuple that contains the total value of all the items based on the cost function
+        and then the list of all items taken.
+    """
     if curr_index is None:
         curr_index = len(items) - 1
 
+    # If there is no more space left or we've traversed all the items, return
+    # 0, as we can't go further
     if capacity == 0 or curr_index < 0:
         return 0, []
 
@@ -82,7 +101,24 @@ def simple_knapsack(capacity, items, cost_func, curr_index=None):
 
 def memoized_knapsack(capacity, items, cost_func, curr_index=None, memo=None):
     """
-        Memoized knapsack solution
+        Memoized knapsack solution that will calculate the value of all combinations of items and
+        then memorize the value of those combinations. The algorithm calculates the solution to
+        the problem by breaking the problem into the smallest possible state where we have either no
+        items or no more capacity left. It then builds up from that state adding one item or no
+        items at a time, evaluating which decision has lead to a more optimal solution to the
+        sub problem, and then storing the answers to those sub problems so they
+        don't have to be calculated again.
+
+        Args:
+        * capacity - The capacity of the knapsack as an int.
+        * items - A list of item objects for choosing from
+        * cost_func - The cost function to determine the value of each items
+        * curr_index [None] - The current index of the item we're looking at inside
+        of the items.
+
+        Returns:
+        * A tuple that contains the total value of all the items based on the cost function
+        and then the list of all items taken.
     """
     # If there is no more space left or we've traversed all the items, return
     # 0, as we can't go further
@@ -91,32 +127,40 @@ def memoized_knapsack(capacity, items, cost_func, curr_index=None, memo=None):
         curr_index = len(items) - 1
         memo = {}
 
+    # If the capacity is 0 or the current index has gone past all of the items.
     if capacity == 0 or curr_index < 0:
         return 0, []
 
     curr_item: Item = items[curr_index]
 
+    # If the item has a weight greater than the current capacity,
+    # skip to the next item.
     if curr_item.weight > capacity:
         return memoized_knapsack(capacity, items, cost_func, curr_index - 1, memo)
 
     # Get the item value and calculate the new capacity of our knapsack
-    # after an item is added.
+    # if the item were to be added to it.
     item_value = cost_func(curr_item)
     new_capacity = capacity - curr_item.weight
 
-    # Check if
+    # If the weight of the items from the current weight onwards
+    # hasnt' been computed, compute it!
     if curr_index not in memo:
         value_with_item, items_with_curr = memoized_knapsack(
             new_capacity, items, cost_func, curr_index - 1, memo
         )
 
         total_value_with_item = value_with_item + item_value
+        # Store the result of the current items
         memo[curr_index] = total_value_with_item, items_with_curr
     else:
         value_with_item, items_with_curr = memo[curr_index]
 
     total_value_with_item = value_with_item + item_value
 
+    # If the weight of the next set of items not
+    # including the current one hasn't been computed,
+    # compute it!
     if curr_index - 1 not in memo:
         # Don't take the item, but take the value
         value_without_item, items_without_curr = memoized_knapsack(
@@ -173,8 +217,6 @@ def main(knapsack_items):
     )
 
 
-import timeit
-
 knapsack_items = [
     Item("Macbook", 10, 15),
     Item("TV", 20, 30),
@@ -190,5 +232,4 @@ knapsack_items = [
     Item("Yeezys", 2, 20),
 ]
 if __name__ == "__main__":
-
     main(knapsack_items)
