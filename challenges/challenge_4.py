@@ -30,7 +30,7 @@ class Item:
         return self.value < other_item.value
 
     def __str__(self):
-        return f"<Item: {self.name}, Value: {self.value}, Weight: {self.weight}>"
+        return f"< Item: {self.name:10}\tValue: {self.value:<3}\tWeight: {self.weight:>2} >"
 
     def __repr__(self):
         return str(self)
@@ -42,7 +42,7 @@ def simple_knapsack(
     """
         Simple knapsack solution that naively approaches solving the knapsack problem. The algorithm
         solves the problem by breaking the problem into the smallest possible state where we have
-        either no items or no more capacity left. It then builds up from that state 
+        either no items or no more capacity left. It then builds up from that stat
         adding one or no items at a time, evaluating which decision has lead
         to a more optimal solution to the sub problem. It then builds up these subproblems
         to get an overall solution that has looked at every item in the bag.
@@ -178,58 +178,52 @@ def memoized_knapsack(capacity, items, cost_func, curr_index=None, memo=None):
         all_items.extend(items_with_curr)
         return total_value_with_item, all_items
 
+    # The value without the item was greater, take it instead
     return value_without_item, items_without_curr
 
 
-def main(knapsack_items):
+def main():
     """
         Solve the knapsack problem and another DP programming challenge.
     """
     capacity = 20
+    sorted_knapsack_items = sorted(knapsack_items)
 
-    knapsack_items = sorted(knapsack_items)
-
-    item_score, items = simple_knapsack(
-        capacity, knapsack_items, lambda item: item.value
-    )
-
-    item_values, items = simple_knapsack(
-        capacity, knapsack_items, lambda item: item.value / item.weight
-    )
-
-    print(simple_knapsack(capacity, knapsack_items, lambda item: item.value))
-    print(memoized_knapsack(capacity, knapsack_items, lambda item: item.value))
-
+    print("#### CHALLENGE 4 PART 1 ####")
     print(
-        timeit.timeit(
-            "simple_knapsack(40, sorted(knapsack_items), lambda item: item.value)",
-            setup="from challenge_4 import simple_knapsack, knapsack_items",
-            number=10,
-        )
+        f"Solving the knapsack problem with a knapsack that has a capacity of {capacity}"
+    )
+    print("and these are the items we can choose from:")
+    for item in sorted_knapsack_items:
+        print(f"\t{item}")
+
+    print("\nThe optimal solution to the problem is $2550 worth of goods")
+
+    simple_score, simple_items = simple_knapsack(
+        capacity, sorted_knapsack_items, lambda item: item.value
+    )
+
+    memo_score, memo_items = memoized_knapsack(
+        capacity, sorted_knapsack_items, lambda item: item.value
     )
 
     print(
-        timeit.timeit(
-            "memoized_knapsack(40, sorted(knapsack_items), lambda item: item.value)",
-            setup="from challenge_4 import memoized_knapsack, knapsack_items",
-            number=10,
-        )
+        f"\nThe memoized_knapsack function computed a bag with the score: ${memo_score}"
     )
+    print("and took these items: ")
+    for item in memo_items:
+        print(f"\t{item}")
 
 
 knapsack_items = [
-    Item("Macbook", 10, 15),
-    Item("TV", 20, 30),
-    Item("IPhone", 5, 8),
-    Item("USB", 3, 1),
-    Item("Minecraft", 1, 20),
-    Item("Super dense diamond", 50, 30),
-    Item("Toothbrush", 1, 1),
-    Item("Monitor", 5, 5),
-    Item("Shoes", 2, 5),
-    Item("Books", 4, 5),
-    Item("Mcdonalds", 1, 5),
-    Item("Yeezys", 2, 20),
+    Item("Macbook", 10, 1500),
+    Item("TV", 20, 800),
+    Item("IPhone", 5, 900),
+    Item("Minecraft", 1, 25),
+    Item("Diamond", 50, 1200),
+    Item("Toothbrush", 1, 5),
+    Item("Monitor", 10, 250),
+    Item("Shoes", 2, 120),
 ]
 if __name__ == "__main__":
-    main(knapsack_items)
+    main()
