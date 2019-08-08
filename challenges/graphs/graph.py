@@ -339,8 +339,6 @@ class Graph:
             minimal_path.append(prev)
             _, prev = path[prev.key]
 
-        print(minimal_path[::-1])
-
         return minimal_path, overall_weight
 
     def is_eulerian_cycle(self):
@@ -352,8 +350,8 @@ class Graph:
             Returns:
             True if the graph has a eularian cycle, false if it does not.
         """
-        for _, vertex in self.graph:
-            neighbors = vertex.get_neighbors()
+        for vertex in self.graph.values():
+            neighbors = vertex.neighbors
             if len(neighbors) % 2 != 0 or not neighbors:
                 return False
 
