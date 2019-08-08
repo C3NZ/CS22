@@ -350,6 +350,9 @@ class Graph:
             Returns:
             True if the graph has a eularian cycle, false if it does not.
         """
+        if not self.graph:
+            return False
+
         for vertex in self.graph.values():
             neighbors = vertex.neighbors
             if len(neighbors) % 2 != 0 or not neighbors:
