@@ -184,8 +184,16 @@ def memoized_knapsack(capacity, items, cost_func, curr_index=None, memo=None):
 
 def count_coins(value, coins, index):
     """
-        Count the amount of different ways you can make change with coins of value
-        
+        A simple coin counting algorithm that counts the way you can fit coins into
+        a specific value by computing it recursively
+
+        Args:
+        * (int) Value - The destination value that we're trying to fit coins into
+        * (list) coins - The set of coins we can choose from
+        * (int) index - The index that we're currently on in the array
+
+        Returns:
+        (int) The ways that we can arrange the coins into the value.
     """
     if value == 0:
         print(index)
@@ -205,8 +213,17 @@ def count_coins(value, coins, index):
 
 def memoized_count_coins(value, coins, index, memo):
     """
-        A memoized coin counting algorithm. This algorithm relies on the memoizing the values
-        of the coins 
+        A memoized coin counting algorithm. This algorithm relies on the memoizing the ways we
+        can arrange the coins by the current remaining value and index in the array.
+
+        Args:
+        * (int) Value - The destination value that we're trying to fit coins into
+        * (list) coins - The set of coins we can choose from
+        * (int) index - The index that we're currently on in the array
+        * (dict) memo - The memoization dictionary
+
+        Returns:
+        (int) The ways that we can arrange the coins into the value.
     """
     # If the value is 0, we have found one way to fit the coins into the value
     if value == 0:
