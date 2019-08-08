@@ -182,6 +182,27 @@ def memoized_knapsack(capacity, items, cost_func, curr_index=None, memo=None):
     return value_without_item, items_without_curr
 
 
+def count_coins(value, coins, index):
+    """
+        Count the amount of different ways you can make change with coins of value
+        
+    """
+    if value == 0:
+        print(index)
+        return 1
+
+    if value < 0:
+        return 0
+
+    if index < 0 and value >= 1:
+        return 0
+
+    value_with_coin = value - coins[index]
+    return count_coins(value, coins, index - 1) + count_coins(
+        value_with_coin, coins, index
+    )
+
+
 def main():
     """
         Solve the knapsack problem and another DP programming challenge.
@@ -213,6 +234,10 @@ def main():
     print("and took these items: ")
     for item in memo_items:
         print(f"\t{item}")
+
+    coins = [1, 2, 3, 4]
+    value = 4
+    print(count_coins(value, coins, len(coins) - 1))
 
 
 knapsack_items = [
