@@ -203,6 +203,47 @@ def count_coins(value, coins, index):
     )
 
 
+def memoized_count_coins(value, coins, index, memo):
+    """
+        A memoized coin counting algorithm. This algorithm relies on the memoizing the values
+        of the coins 
+    """
+    # If the value is 0, we have found one way to fit the coins into the value
+    if value == 0:
+        return 1
+
+    # If the index is less than or equal to the amount of coins,
+    # there are no ways to fit this set of coins into the value.
+    if index == len(coins):
+        return 0
+
+    key = f"{value}-{index}"
+
+    # Check if the answer has already been computed
+    if key in memo:
+        return memo[key]
+
+    current_sum = 0
+    total_ways = 0
+
+    # While the current sum is less than the value
+    while current_sum <= value:
+        # Math for keeping track of combos
+        current_coin = coins[index]
+        new_value = value - current_sum
+        current_sum += current_coin
+
+        # No need to recurse if the value is less than 0
+        if new_value >= 0:
+            num_ways = memoized_count_coins(new_value, coins, index + 1, memo)
+            total_ways += num_ways
+
+    # Memoize the answer
+    memo[key] = total_ways
+
+    return total_ways
+
+
 def main():
     """
         Solve the knapsack problem and another DP programming challenge.
@@ -220,10 +261,6 @@ def main():
 
     print("\nThe optimal solution to the problem is $2550 worth of goods")
 
-    simple_score, simple_items = simple_knapsack(
-        capacity, sorted_knapsack_items, lambda item: item.value
-    )
-
     memo_score, memo_items = memoized_knapsack(
         capacity, sorted_knapsack_items, lambda item: item.value
     )
@@ -237,7 +274,21 @@ def main():
 
     coins = [1, 2, 3, 4]
     value = 4
-    print(count_coins(value, coins, len(coins) - 1))
+
+    print("\n#### CHALLENGE 4 PART 2 ####")
+    print(
+        f"Solving the coin count problem where we have a value {value} and coins {coins}"
+    )
+
+    print(
+        "\nThe optimal solution to the problem is 5, because there's 5 ways to fit those coins into 4"
+    )
+
+    num_of_ways = memoized_count_coins(value, coins, 0, {})
+
+    print(
+        f"\nThe memoized_count_coins computed {num_of_ways} ways to fit {coins} into {value}"
+    )
 
 
 knapsack_items = [
