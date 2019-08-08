@@ -343,6 +343,22 @@ class Graph:
 
         return minimal_path, overall_weight
 
+    def is_eulerian_cycle(self):
+        """
+            Check if this graph has a eulerian cycle. To check this, every single
+            vertex must have at least 2 neighbors, otherwise, there is no eularian cycle.
+            within the graph.
+
+            Returns:
+            True if the graph has a eularian cycle, false if it does not.
+        """
+        for _, vertex in self.graph:
+            neighbors = vertex.get_neighbors()
+            if len(neighbors) % 2 != 0 or not neighbors:
+                return False
+
+        return True
+
 
 class PriorityEntry(object):
     """
